@@ -1,4 +1,3 @@
-// New code!
 const moment = require('moment');
 const crypto = require('crypto');
 const assign = require('lodash.assign');
@@ -36,7 +35,11 @@ class Resource {
 
     return new Promise((resolve, reject) => {
       request(options, (error, response, body) => {
-        resolve(JSON.parse(body));
+        if (!error && response.statusCode == 200) {
+          resolve(JSON.parse(body));
+        } else {
+          reject(error);
+        }
       });
     });
   }

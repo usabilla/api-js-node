@@ -1,6 +1,6 @@
 {
   "name": "api-js-node",
-  "version": "1.0.0",
+  "version": "v1.0.0-alpha",
   "description": "Node client for Usabilla public API",
   "main": "./dist/index.js",
   "dependencies": {
