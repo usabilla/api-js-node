@@ -1,29 +1,16 @@
 const gulp = require('gulp');
-const babelify = require('babelify');
-const browserify = require('browserify');
-const watchify = require('watchify');
-const assign = require('lodash.assign');
-const vinylSourceStream = require('vinyl-source-stream');
-const vinylBuffer = require('vinyl-buffer');
-const $ = require('gulp-load-plugins')();
+const babel = require('gulp-babel');
 
-const customOptions = {
-  entries: './index.js',
-  debug: true
+const paths = {
+  scripts: 'src/index.js'
 };
-const options = assign({}, watchify.args, customOptions);
-const sources = watchify(browserify(options));
 
-sources.transform(babelify);
-
-gulp.task('scripts', bundle);
-sources.on('update', bundle);
-sources.on('log', $.util.log);
-
-function bundle () {
-  return sources.bundle()
-    .on('error', $.util.log.bind($.util, 'Browserify Error'))
-    .pipe(vinylSourceStream('index.js'))
-    .pipe(vinylBuffer())
+gulp.task('babel', () => {
+  return gulp.src(paths.scripts)
+    .pipe(babel())
     .pipe(gulp.dest('dist'));
-}
+});
+
+gulp.task('default', ['babel'], () => {
+  gulp.watch(paths.scripts, ['babel']);
+});
