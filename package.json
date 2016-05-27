@@ -1,0 +1,23 @@
+{
+  "name": "api-js-node",
+  "version": "1.0.0",
+  "description": "Node client for Usabilla public API",
+  "main": "index.js",
+  "dependencies": {
+    "moment": "^2.13.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:usabilla/api-js-node.git"
+  },
+  "author": {
+    "name": "Usabilla",
+    "email": "development@usabilla.com",
+    "url": "http://developers.usabilla.com"
+  },
+  "license": "MIT"
+}

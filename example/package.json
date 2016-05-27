@@ -1,0 +1,19 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "Example of using node client for Usabilla public API",
+  "main": "example.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Usabilla",
+    "email": "development@usabilla.com",
+    "url": "http://developers.usabilla.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.72.0",
+    "yargs": "^4.7.1"
+  }
+}
