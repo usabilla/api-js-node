@@ -26,7 +26,17 @@ class Resource {
   /**
    * Make a GET call to the API, using the query parameters.
    * To use a specific id you should `id` in the query object.
-   * The request query parameters are the ones that the API supports.
+   * The request query parameters are the ones that the API supports,
+   * and should be given in a params object.
+   *
+   * @example
+   * {
+   *   id: '5869485767494'
+   *   params: {
+   *     limit: 5
+   *   }
+   * }
+   *
    * @param query
    * @returns {Promise}
    */
@@ -188,7 +198,6 @@ class SignatureFactory {
   getSignature () {
     const kDate = this.hmac('USBL1' + this.secretKey, this.dates.shortdate);
     const kSigning = this.hmac(kDate, 'usbl1_request');
-    // const kCredentials = this.hmac(kDate, 'usbl1_request');
 
     return this.hmac(kSigning, this.stringToSign(), 'hex');
   }
@@ -218,18 +227,19 @@ class SignatureFactory {
       this.url = this.url.replace(':id', query.id);
     }
 
-    if (query.urlParameters && query.urlParameters !== '') {
+    if (!!query.params) {
       var params = [];
 
-      for (var k in query.urlParameters) {
-        if (query.urlParameters.hasOwnProperty(k)) {
+      for (var k in query.params) {
+        if (query.params.hasOwnProperty(k)) {
           params.push(k);
         }
       }
       params.sort();
 
+      this.queryParameters = '';
       for (var i = 0; i < params.length; i++) {
-        this.queryParameters += params[i] + '=' + query.urlParameters[params[i]] + '&';
+        this.queryParameters += params[i] + '=' + query.params[params[i]] + '&';
       }
 
       this.queryParameters = this.queryParameters.slice(0, -1);

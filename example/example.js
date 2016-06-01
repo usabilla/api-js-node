@@ -14,7 +14,10 @@ api.websites.buttons.get().then((response) => {
 
   // Use the button id to get feedback for this button id.
   var buttonFeedbackQuery = {
-    id: buttons[1].id
+    id: buttons[1].id,
+    params: {
+      limit: 1
+    }
   };
 
   api.websites.buttons.feedback.get(buttonFeedbackQuery).then((feedback) => {
