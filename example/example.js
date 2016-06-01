@@ -1,7 +1,6 @@
 /**
  * argv[0] Access Key
  * argv[1] Secret Key
- * argv[2] Button id
  */
 const args = require('yargs').argv._;
 const usabilla = require('../dist');
