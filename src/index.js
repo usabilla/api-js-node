@@ -131,11 +131,10 @@ class ButtonsResource extends Resource {
 class WebsitesProduct {
 
   constructor (base, signatureFactory) {
-    this.baseUrl = `${base}/websites`;
-    this.signatureFactory = signatureFactory;
+    const baseUrl = `${base}/websites`;
 
-    this.buttons = new ButtonsResource(this.baseUrl, signatureFactory);
-    this.campaigns = new CampaignsResource(this.baseUrl, signatureFactory);
+    this.buttons = new ButtonsResource(baseUrl, signatureFactory);
+    this.campaigns = new CampaignsResource(baseUrl, signatureFactory);
   }
 }
 
@@ -278,8 +277,9 @@ export class Usabilla {
       protocol: 'https'
     };
 
-    this.signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
-    this.websites = new WebsitesProduct('/live', this.signatureFactory);
+    const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
+
+    this.websites = new WebsitesProduct('/live', signatureFactory);
   }
 
   configure (options) {
