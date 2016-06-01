@@ -3,6 +3,10 @@ const crypto = require('crypto');
 const assign = require('lodash.assign');
 const request = require('request');
 
+/**
+ * Base resource class which takes care of creating the query
+ * and signing the request.
+ */
 class Resource {
 
   constructor (url, signatureFactory) {
@@ -19,10 +23,17 @@ class Resource {
     return `${this.config.protocol}://${this.config.host}`;
   }
 
-  get (resourceId) {
-    const query = {
-      resourceId: resourceId
-    };
+  /**
+   * Make a GET call to the API, using the query parameters.
+   * To use a specific id you should `id` in the query object.
+   * The request query parameters are the ones that the API supports.
+   * @param query
+   * @returns {Promise}
+   */
+  get (query) {
+    if (!query) {
+      query = {};
+    }
 
     this.signatureFactory.setUrl(this.url);
     this.signatureFactory.handleQuery(query);
@@ -45,24 +56,72 @@ class Resource {
   }
 }
 
-class CampaignsResource extends Resource {
+/**
+ * Campaigns results resource.
+ */
+class CampaignsResultsResource extends Resource {
 
-  constructor (base) {
-    super(`${base}/campaigns/:id`);
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}/:id/results`;
+    super(baseUrl, signatureFactory);
   }
 }
 
+/**
+ * Campaigns stats resource.
+ */
+class CampaignsStatsResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}/:id/stats`;
+    super(baseUrl, signatureFactory);
+  }
+}
+
+/**
+ * Campaigns resource.
+ */
+class CampaignsResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}/campaign`;
+    super(baseUrl, signatureFactory);
+
+    this.resutls = new CampaignsResultsResource(baseUrl, signatureFactory);
+    this.stats = new CampaignsStatsResource(baseUrl, signatureFactory);
+  }
+}
+
+/**
+ * Buttons feedback resource.
+ */
+class ButtonFeedbackResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    super(`${base}/:id/feedback`, signatureFactory);
+  }
+}
+
+/**
+ * Buttons resource.
+ */
 class ButtonsResource extends Resource {
 
   constructor (base, signatureFactory) {
-    super(`${base}/button/:id/feedback`, signatureFactory);
+    const baseUrl = `${base}/button`;
+    super(baseUrl, signatureFactory);
+
+    this.feedback = new ButtonFeedbackResource(baseUrl, signatureFactory);
   }
 }
 
+/**
+ * Websites product endpoints.
+ */
 class WebsitesProduct {
 
   constructor (base, signatureFactory) {
-    this.baseUrl = `${base}/website`;
+    this.baseUrl = `${base}/websites`;
     this.signatureFactory = signatureFactory;
 
     this.buttons = new ButtonsResource(this.baseUrl, signatureFactory);
@@ -152,11 +211,11 @@ class SignatureFactory {
   }
 
   handleQuery (query) {
-    if (query.resourceId && query.resourceId != '') {
-      if (query.resourceId == '*') {
-        query.resourceId = '%2A';
+    if (query.id && query.id != '') {
+      if (query.id == '*') {
+        query.id = '%2A';
       }
-      this.url = this.url.replace(':id', query.resourceId);
+      this.url = this.url.replace(':id', query.id);
     }
 
     if (query.urlParameters && query.urlParameters !== '') {
@@ -196,6 +255,10 @@ class SignatureFactory {
   }
 }
 
+/**
+ * The main Usabilla API object, which exposes product specific resources.
+ * Needs to be instantiated with access and secret keys.
+ */
 export class Usabilla {
 
   constructor (accessKey, secretKey) {
