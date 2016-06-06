@@ -62,3 +62,18 @@ api.websites.inpage.get().then((response) => {
     console.log(results.items);
   });
 });
+
+// Get all email widgets for this account.
+api.email.widgets.get().then((response) => {
+  const emailWidgets = response.items;
+
+  // Get the feedback for a email widget with id.
+  var emailQuery = {
+    id: emailWidgets[0].id
+  };
+
+  // Get feedback from the first email widget
+  api.email.widgets.feedback.get(emailQuery).then((results) => {
+    console.log(results.items);
+  });
+});

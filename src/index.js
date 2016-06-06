@@ -67,7 +67,30 @@ class Resource {
 }
 
 /**
- * InPage feedback resource.
+ * Email Widget feedback resource.
+ */
+class WidgetFeedbackResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    super(`${base}/:id/feedback`, signatureFactory);
+  }
+}
+
+/**
+ * Email Widget resource.
+ */
+class WidgetsResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}/button`;
+    super(baseUrl, signatureFactory);
+
+    this.feedback = new WidgetFeedbackResource(baseUrl, signatureFactory);
+  }
+}
+
+/**
+ * Websites InPage feedback resource.
  */
 class InPageFeedbackResource extends Resource {
 
@@ -77,7 +100,7 @@ class InPageFeedbackResource extends Resource {
 }
 
 /**
- * InPage resource.
+ * Websites InPage resource.
  */
 class InPageResource extends Resource {
 
@@ -90,7 +113,7 @@ class InPageResource extends Resource {
 }
 
 /**
- * Campaign Results resource.
+ * Websites Campaign Results resource.
  * This resource provides the responses for a single or all campaigns.
  */
 class CampaignsResultsResource extends Resource {
@@ -102,7 +125,7 @@ class CampaignsResultsResource extends Resource {
 }
 
 /**
- * Campaign Stats resource.
+ * Websites Campaign Stats resource.
  * This resource provides the main statistics from a campaign.
  */
 class CampaignsStatsResource extends Resource {
@@ -114,7 +137,7 @@ class CampaignsStatsResource extends Resource {
 }
 
 /**
- * Campaigns resource.
+ * Websites Campaigns resource.
  */
 class CampaignsResource extends Resource {
 
@@ -128,7 +151,7 @@ class CampaignsResource extends Resource {
 }
 
 /**
- * Buttons feedback resource.
+ * Websites Buttons feedback resource.
  */
 class ButtonFeedbackResource extends Resource {
 
@@ -138,7 +161,7 @@ class ButtonFeedbackResource extends Resource {
 }
 
 /**
- * Buttons resource.
+ * Websites Buttons resource.
  */
 class ButtonsResource extends Resource {
 
@@ -161,6 +184,18 @@ class WebsitesProduct {
     this.buttons = new ButtonsResource(baseUrl, signatureFactory);
     this.campaigns = new CampaignsResource(baseUrl, signatureFactory);
     this.inpage = new InPageResource(baseUrl, signatureFactory);
+  }
+}
+
+/**
+ * Email product endpoints.
+ */
+class EmailProduct {
+
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}/email`;
+
+    this.widgets = new WidgetsResource(baseUrl, signatureFactory);
   }
 }
 
@@ -306,6 +341,7 @@ export class Usabilla {
     const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
 
     this.websites = new WebsitesProduct('/live', signatureFactory);
+    this.email = new EmailProduct('/live', signatureFactory);
   }
 
   configure (options) {
