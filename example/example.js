@@ -6,7 +6,7 @@ const args = require('yargs').argv._;
 const usabilla = require('../dist');
 
 const api = new usabilla.Usabilla(args[0], args[1]);
-/*
+
 // Get all buttons for this account.
 api.websites.buttons.get().then((response) => {
   const buttons = response.items;
@@ -62,7 +62,7 @@ api.websites.inpage.get().then((response) => {
     console.log(results.items);
   });
 });
-*/
+
 // Get all inpage widgets for this account.
 api.email.widgets.get().then((response) => {
   const emailWidgets = response.items;
