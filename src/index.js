@@ -59,7 +59,7 @@ class Resource {
         if (!error && response.statusCode == 200) {
           resolve(JSON.parse(body));
         } else {
-          reject(error);
+          reject(body);
         }
       });
     });
@@ -122,7 +122,7 @@ class CampaignsResource extends Resource {
     const baseUrl = `${base}/campaign`;
     super(baseUrl, signatureFactory);
 
-    this.resutls = new CampaignsResultsResource(baseUrl, signatureFactory);
+    this.results = new CampaignsResultsResource(baseUrl, signatureFactory);
     this.stats = new CampaignsStatsResource(baseUrl, signatureFactory);
   }
 }
