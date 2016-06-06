@@ -91,7 +91,7 @@ class InPageResource extends Resource {
 
 /**
  * Campaign Results resource.
- * This resource provides the responses for a single or all compaigns.
+ * This resource provides the responses for a single or all campaigns.
  */
 class CampaignsResultsResource extends Resource {
 

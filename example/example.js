@@ -45,11 +45,11 @@ api.websites.campaigns.get().then((response) => {
 
 // Get all inpage widgets for this account.
 api.websites.inpage.get().then((response) => {
-  const inpage_widgets = response.items;
+  const inPageWidgets = response.items;
 
   // Get the feedback for a inpage widget with id.
   var inPageQuery = {
-    id: inpage_widgets[0].id
+    id: inPageWidgets[0].id
   };
 
   // Get feedback from the first inpage widget
