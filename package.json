@@ -1,5 +1,5 @@
 {
-  "name": "api-js-node",
+  "name": "usabilla-api",
   "version": "v1.0.0-alpha",
   "description": "Node client for Usabilla public API",
   "main": "./dist/index.js",
@@ -15,6 +15,8 @@
   },
   "scripts": {
     "start": "gulp",
+    "build": "gulp babel",
+    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
