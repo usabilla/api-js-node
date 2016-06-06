@@ -59,7 +59,7 @@ class Resource {
         if (!error && response.statusCode == 200) {
           resolve(JSON.parse(body));
         } else {
-          reject(error);
+          reject(body);
         }
       });
     });
@@ -67,7 +67,8 @@ class Resource {
 }
 
 /**
- * Campaigns results resource.
+ * Campaign Results resource.
+ * This resource provides the responses for a single or all compaigns.
  */
 class CampaignsResultsResource extends Resource {
 
@@ -78,7 +79,8 @@ class CampaignsResultsResource extends Resource {
 }
 
 /**
- * Campaigns stats resource.
+ * Campaign Stats resource.
+ * This resource provides the main statistics from a campaign.
  */
 class CampaignsStatsResource extends Resource {
 
@@ -97,7 +99,7 @@ class CampaignsResource extends Resource {
     const baseUrl = `${base}/campaign`;
     super(baseUrl, signatureFactory);
 
-    this.resutls = new CampaignsResultsResource(baseUrl, signatureFactory);
+    this.results = new CampaignsResultsResource(baseUrl, signatureFactory);
     this.stats = new CampaignsStatsResource(baseUrl, signatureFactory);
   }
 }

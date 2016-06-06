@@ -19,10 +19,14 @@ api.websites.buttons.get().then((response) => {
     }
   };
 
+  // Get a single feedback from the second button
   api.websites.buttons.feedback.get(buttonFeedbackQuery).then((feedback) => {
     console.log(feedback);
   });
+}).catch((reason) => {
+  console.error(reason);
 });
+
 
 // Get all campaigns for this account.
 api.websites.campaigns.get().then((response) => {
@@ -33,11 +37,14 @@ api.websites.campaigns.get().then((response) => {
     id: campaigns[0].id
   };
 
-  api.websites.campaigns.resutls(campaignQuery).then((results) => {
+  // Get the responses of the first campaign
+  api.websites.campaigns.results.get(campaignQuery).then((results) => {
     console.log(results);
   });
 
-  api.websites.campaigns.stats(campaignQuery).then((results) => {
+  // Get the stats of the first campaign
+  api.websites.campaigns.stats.get(campaignQuery).then((results) => {
+    console.log("AA");
     console.log(results);
   });
 });
