@@ -44,7 +44,6 @@ api.websites.campaigns.get().then((response) => {
 
   // Get the stats of the first campaign
   api.websites.campaigns.stats.get(campaignQuery).then((results) => {
-    console.log("AA");
     console.log(results);
   });
 });
