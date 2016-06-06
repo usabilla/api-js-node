@@ -63,7 +63,7 @@ api.websites.inpage.get().then((response) => {
   });
 });
 
-// Get all inpage widgets for this account.
+// Get all email widgets for this account.
 api.email.widgets.get().then((response) => {
   const emailWidgets = response.items;
 
@@ -72,7 +72,7 @@ api.email.widgets.get().then((response) => {
     id: emailWidgets[0].id
   };
 
-  // Get feedback from the first inpage widget
+  // Get feedback from the first email widget
   api.email.widgets.feedback.get(emailQuery).then((results) => {
     console.log(results.items);
   });
