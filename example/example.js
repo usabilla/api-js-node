@@ -18,12 +18,11 @@ api.websites.buttons.get().then((response) => {
       limit: 1
     }
   };
-
-  // Get a single feedback from the second button
   api.websites.buttons.feedback.get(buttonFeedbackQuery).then((feedback) => {
     console.log(feedback);
   });
 }).catch((reason) => {
+  // If the api call fails, we want to see the error message
   console.error(reason);
 });
 
@@ -56,8 +55,6 @@ api.websites.inpage.get().then((response) => {
   var inPageQuery = {
     id: inPageWidgets[0].id
   };
-
-  // Get feedback from the first inpage widget
   api.websites.inpage.feedback.get(inPageQuery).then((results) => {
     console.log(results.items);
   });
@@ -71,9 +68,20 @@ api.email.widgets.get().then((response) => {
   var emailQuery = {
     id: emailWidgets[0].id
   };
-
-  // Get feedback from the first email widget
   api.email.widgets.feedback.get(emailQuery).then((results) => {
+    console.log(results.items);
+  });
+});
+
+// Get all apps forms for this account.
+api.apps.forms.get().then((response) => {
+  const appsForms = response.items;
+
+  // Get the feedback for a apps form with id.
+  var appsQuery = {
+    id: appsForms[1].id
+  };
+  api.apps.forms.feedback.get(appsQuery).then((results) => {
     console.log(results.items);
   });
 });
