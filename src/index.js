@@ -67,6 +67,29 @@ class Resource {
 }
 
 /**
+ * Apps Forms feedback resource.
+ */
+class FormsFeedbackResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    super(`${base}/:id/feedback`, signatureFactory);
+  }
+}
+
+/**
+ * Apps Forms resource.
+ */
+class FormsResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}`;
+    super(baseUrl, signatureFactory);
+
+    this.feedback = new FormsFeedbackResource(baseUrl, signatureFactory);
+  }
+}
+
+/**
  * Email Widget feedback resource.
  */
 class WidgetFeedbackResource extends Resource {
@@ -196,6 +219,18 @@ class EmailProduct {
     const baseUrl = `${base}/email`;
 
     this.widgets = new WidgetsResource(baseUrl, signatureFactory);
+  }
+}
+
+/**
+ * Apps product endpoints.
+ */
+class AppsProduct {
+
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}/apps`;
+
+    this.forms = new FormsResource(baseUrl, signatureFactory);
   }
 }
 
@@ -342,6 +377,7 @@ export class Usabilla {
 
     this.websites = new WebsitesProduct('/live', signatureFactory);
     this.email = new EmailProduct('/live', signatureFactory);
+    this.apps = new AppsProduct('/live', signatureFactory);
   }
 
   configure (options) {
