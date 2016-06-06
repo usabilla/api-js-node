@@ -67,8 +67,31 @@ class Resource {
 }
 
 /**
+ * InPage feedback resource.
+ */
+class InPageFeedbackResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    super(`${base}/:id/feedback`, signatureFactory);
+  }
+}
+
+/**
+ * InPage resource.
+ */
+class InPageResource extends Resource {
+
+  constructor (base, signatureFactory) {
+    const baseUrl = `${base}/inpage`;
+    super(baseUrl, signatureFactory);
+
+    this.feedback = new InPageFeedbackResource(baseUrl, signatureFactory);
+  }
+}
+
+/**
  * Campaign Results resource.
- * This resource provides the responses for a single or all compaigns.
+ * This resource provides the responses for a single or all campaigns.
  */
 class CampaignsResultsResource extends Resource {
 
@@ -137,6 +160,7 @@ class WebsitesProduct {
 
     this.buttons = new ButtonsResource(baseUrl, signatureFactory);
     this.campaigns = new CampaignsResource(baseUrl, signatureFactory);
+    this.inpage = new InPageResource(baseUrl, signatureFactory);
   }
 }
 

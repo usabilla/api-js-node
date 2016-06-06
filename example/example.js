@@ -47,3 +47,18 @@ api.websites.campaigns.get().then((response) => {
     console.log(results);
   });
 });
+
+// Get all inpage widgets for this account.
+api.websites.inpage.get().then((response) => {
+  const inPageWidgets = response.items;
+
+  // Get the feedback for a inpage widget with id.
+  var inPageQuery = {
+    id: inPageWidgets[0].id
+  };
+
+  // Get feedback from the first inpage widget
+  api.websites.inpage.feedback.get(inPageQuery).then((results) => {
+    console.log(results.items);
+  });
+});
