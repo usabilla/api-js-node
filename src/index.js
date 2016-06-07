@@ -364,7 +364,7 @@ class SignatureFactory {
  * The main Usabilla API object, which exposes product specific resources.
  * Needs to be instantiated with access and secret keys.
  */
-export class Usabilla {
+class Usabilla {
 
   constructor (accessKey, secretKey) {
     this.config = {
@@ -384,3 +384,5 @@ export class Usabilla {
     assign(this.config, options);
   }
 }
+
+module.exports = Usabilla;
