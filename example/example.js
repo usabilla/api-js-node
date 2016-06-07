@@ -5,7 +5,7 @@
 const args = require('yargs').argv._;
 const usabilla = require('../dist');
 
-const api = new usabilla.Usabilla(args[0], args[1]);
+const api = new usabilla(args[0], args[1]);
 
 // Get all buttons for this account.
 api.websites.buttons.get().then((response) => {
