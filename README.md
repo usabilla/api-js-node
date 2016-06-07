@@ -2,7 +2,7 @@
 The Usabilla Client API for Node.js provides access to the Usabilla database from Node.js applications.
 
 The client has the following features:
-* Reading both the buttons / campaigns / widgets / forms as the feedback they contain
+* Getting the buttons / campaigns / widgets / forms as well as the feedback they contain.
 * Querying over the feedback with different parameters.
 
 ## Authentication
