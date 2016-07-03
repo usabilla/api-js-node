@@ -371,9 +371,9 @@ class Usabilla {
 
     const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
 
-    this.websites = new WebsitesProduct('/live', signatureFactory, config);
-    this.email = new EmailProduct('/live', signatureFactory, config);
-    this.apps = new AppsProduct('/live', signatureFactory, config);
+    this.websites = new WebsitesProduct('/live', signatureFactory, this.config);
+    this.email = new EmailProduct('/live', signatureFactory, this.config);
+    this.apps = new AppsProduct('/live', signatureFactory, this.config);
   }
 
   configure (options) {
