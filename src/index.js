@@ -76,7 +76,7 @@ class Resource {
       }
       while (this.config.iterator && hasMore);
 
-      resolve('d');
+      resolve(results);
 
     });
   }
