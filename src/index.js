@@ -12,7 +12,8 @@ class Resource {
   constructor (url, signatureFactory) {
     this.config = {
       protocol: 'https',
-      host: 'data.usabilla.com'
+      host: 'data.usabilla.com',
+      iterator: false
     };
 
     this.url = url;
@@ -41,27 +42,42 @@ class Resource {
    * @returns {Promise}
    */
   get (query) {
-    if (!query) {
-      query = {};
-    }
-
-    this.signatureFactory.setUrl(this.url);
-    this.signatureFactory.handleQuery(query);
-    const signature = this.signatureFactory.sign();
-
-    const options = {
-      url: this.getBaseUrl() + signature.url,
-      headers: signature.headers
-    };
+    var query = query || {}
+    var results = [];
+    var hasMore = false;
 
     return new Promise((resolve, reject) => {
-      request(options, (error, response, body) => {
-        if (!error && response.statusCode == 200) {
-          resolve(JSON.parse(body));
-        } else {
-          reject(body);
-        }
-      });
+
+      do {
+        this.signatureFactory.setUrl(this.url);
+        this.signatureFactory.handleQuery(query);
+        const signature = this.signatureFactory.sign();
+
+        var requestOptions = {
+          url: this.getBaseUrl() + signature.url,
+          headers: signature.headers
+        };
+
+        request(requestOptions, (error, response, body) => {
+
+          if (!error && response.statusCode == 200) {
+            var answer = JSON.parse(body);
+
+            hasMore = answer.hasMore;
+            results = results.concat(answer.items);
+            query = assign(query, {params: { since: answer.lastTimestamp }});
+
+          } else {
+            reject(body);
+
+          }
+        });
+
+      }
+      while (this.config.iterator && hasMore);
+
+      resolve('d');
+
     });
   }
 }
@@ -370,7 +386,8 @@ class Usabilla {
     this.config = {
       method: 'GET',
       host: 'data.usabilla.com',
-      protocol: 'https'
+      protocol: 'https',
+      iterator: true
     };
 
     const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);

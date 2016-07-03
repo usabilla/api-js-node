@@ -18,14 +18,13 @@ api.websites.buttons.get().then((response) => {
       limit: 1
     }
   };
-  api.websites.buttons.feedback.get(buttonFeedbackQuery).then((feedback) => {
-    console.log(feedback);
+  api.websites.buttons.feedback.get(buttonFeedbackQuery).then((results) => {
+    //console.log(results);
   });
 }).catch((reason) => {
   // If the api call fails, we want to see the error message
   console.error(reason);
 });
-
 
 // Get all campaigns for this account.
 api.websites.campaigns.get().then((response) => {
