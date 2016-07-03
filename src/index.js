@@ -9,14 +9,10 @@ const request = require('request');
  */
 class Resource {
 
-  constructor (url, signatureFactory) {
-    this.config = {
-      protocol: 'https',
-      host: 'data.usabilla.com'
-    };
-
+  constructor (url, signatureFactory, config) {
     this.url = url;
     this.signatureFactory = signatureFactory;
+    this.config = config
   }
 
   getBaseUrl () {
@@ -71,8 +67,8 @@ class Resource {
  */
 class FormsFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory) {
-    super(`${base}/:id/feedback`, signatureFactory);
+  constructor (base, signatureFactory, config) {
+    super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
 
@@ -81,11 +77,11 @@ class FormsFeedbackResource extends Resource {
  */
 class FormsResource extends Resource {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}`;
-    super(baseUrl, signatureFactory);
+    super(baseUrl, signatureFactory, config);
 
-    this.feedback = new FormsFeedbackResource(baseUrl, signatureFactory);
+    this.feedback = new FormsFeedbackResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -94,8 +90,8 @@ class FormsResource extends Resource {
  */
 class WidgetFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory) {
-    super(`${base}/:id/feedback`, signatureFactory);
+  constructor (base, signatureFactory, config) {
+    super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
 
@@ -104,11 +100,11 @@ class WidgetFeedbackResource extends Resource {
  */
 class WidgetsResource extends Resource {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/button`;
-    super(baseUrl, signatureFactory);
+    super(baseUrl, signatureFactory, config);
 
-    this.feedback = new WidgetFeedbackResource(baseUrl, signatureFactory);
+    this.feedback = new WidgetFeedbackResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -117,8 +113,8 @@ class WidgetsResource extends Resource {
  */
 class InPageFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory) {
-    super(`${base}/:id/feedback`, signatureFactory);
+  constructor (base, signatureFactory, config) {
+    super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
 
@@ -127,11 +123,11 @@ class InPageFeedbackResource extends Resource {
  */
 class InPageResource extends Resource {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/inpage`;
-    super(baseUrl, signatureFactory);
+    super(baseUrl, signatureFactory, config);
 
-    this.feedback = new InPageFeedbackResource(baseUrl, signatureFactory);
+    this.feedback = new InPageFeedbackResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -141,9 +137,9 @@ class InPageResource extends Resource {
  */
 class CampaignsResultsResource extends Resource {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/:id/results`;
-    super(baseUrl, signatureFactory);
+    super(baseUrl, signatureFactory, config);
   }
 }
 
@@ -153,9 +149,9 @@ class CampaignsResultsResource extends Resource {
  */
 class CampaignsStatsResource extends Resource {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/:id/stats`;
-    super(baseUrl, signatureFactory);
+    super(baseUrl, signatureFactory, config);
   }
 }
 
@@ -164,12 +160,12 @@ class CampaignsStatsResource extends Resource {
  */
 class CampaignsResource extends Resource {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/campaign`;
-    super(baseUrl, signatureFactory);
+    super(baseUrl, signatureFactory, config);
 
-    this.results = new CampaignsResultsResource(baseUrl, signatureFactory);
-    this.stats = new CampaignsStatsResource(baseUrl, signatureFactory);
+    this.results = new CampaignsResultsResource(baseUrl, signatureFactory, config);
+    this.stats = new CampaignsStatsResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -178,8 +174,8 @@ class CampaignsResource extends Resource {
  */
 class ButtonFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory) {
-    super(`${base}/:id/feedback`, signatureFactory);
+  constructor (base, signatureFactory, config) {
+    super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
 
@@ -188,11 +184,11 @@ class ButtonFeedbackResource extends Resource {
  */
 class ButtonsResource extends Resource {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/button`;
-    super(baseUrl, signatureFactory);
+    super(baseUrl, signatureFactory, config);
 
-    this.feedback = new ButtonFeedbackResource(baseUrl, signatureFactory);
+    this.feedback = new ButtonFeedbackResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -201,12 +197,12 @@ class ButtonsResource extends Resource {
  */
 class WebsitesProduct {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/websites`;
 
-    this.buttons = new ButtonsResource(baseUrl, signatureFactory);
-    this.campaigns = new CampaignsResource(baseUrl, signatureFactory);
-    this.inpage = new InPageResource(baseUrl, signatureFactory);
+    this.buttons = new ButtonsResource(baseUrl, signatureFactory, config);
+    this.campaigns = new CampaignsResource(baseUrl, signatureFactory, config);
+    this.inpage = new InPageResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -215,10 +211,10 @@ class WebsitesProduct {
  */
 class EmailProduct {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/email`;
 
-    this.widgets = new WidgetsResource(baseUrl, signatureFactory);
+    this.widgets = new WidgetsResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -227,10 +223,10 @@ class EmailProduct {
  */
 class AppsProduct {
 
-  constructor (base, signatureFactory) {
+  constructor (base, signatureFactory, config) {
     const baseUrl = `${base}/apps`;
 
-    this.forms = new FormsResource(baseUrl, signatureFactory);
+    this.forms = new FormsResource(baseUrl, signatureFactory, config);
   }
 }
 
@@ -375,9 +371,9 @@ class Usabilla {
 
     const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
 
-    this.websites = new WebsitesProduct('/live', signatureFactory);
-    this.email = new EmailProduct('/live', signatureFactory);
-    this.apps = new AppsProduct('/live', signatureFactory);
+    this.websites = new WebsitesProduct('/live', signatureFactory, config);
+    this.email = new EmailProduct('/live', signatureFactory, config);
+    this.apps = new AppsProduct('/live', signatureFactory, config);
   }
 
   configure (options) {
