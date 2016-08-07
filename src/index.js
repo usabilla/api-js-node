@@ -2,7 +2,7 @@ const moment = require('moment');
 const crypto = require('crypto');
 const assign = require('lodash.assign');
 const request = require('request');
-const https = require("https");
+const https = require('https');
 
 /**
  * Base resource class which takes care of creating the query
@@ -32,11 +32,12 @@ class Resource {
    * }
    *
    * @param query
+   * @param results
    * @returns {Promise}
    */
 
   get(query, results) {
-    var query = query || {}
+    var query = query || {};
     var results = results || [];
     var that = this;
     var deferred = Promise.defer();
@@ -52,19 +53,17 @@ class Resource {
       headers: signature.headers
     };
 
-    https.get(requestOptions,function(res) {
+    https.get(requestOptions, function(res) {
       var str = '';
       var answer = {};
 
-      res.on('data',function(chunk) {
+      res.on('data', function(chunk) {
         str += chunk;
       });
 
-      res.on('end',function() {
+      res.on('end', function() {
         answer = JSON.parse(str);
-        console.log('resAnswer', answer.items.length);
         results = results.concat(answer.items);
-        console.log('resEnd', results.length);
 
         if (answer.hasMore && that.config.iterator) {
           query = assign(query, {params: { since: answer.lastTimestamp }});
@@ -385,7 +384,6 @@ class Usabilla {
     this.config = {
       method: 'GET',
       host: 'data.usabilla.com',
-      protocol: 'https',
       iterator: true
     };
 
