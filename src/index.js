@@ -62,9 +62,7 @@ class Resource {
 
       res.on('end',function() {
         answer = JSON.parse(str);
-        console.log('resAnswer', answer.items.length);
         results = results.concat(answer.items);
-        console.log('resEnd', results.length);
 
         if (answer.hasMore && that.config.iterator) {
           query = assign(query, {params: { since: answer.lastTimestamp }});
