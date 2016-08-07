@@ -2,6 +2,7 @@ const moment = require('moment');
 const crypto = require('crypto');
 const assign = require('lodash.assign');
 const request = require('request');
+const https = require("https");
 
 /**
  * Base resource class which takes care of creating the query
@@ -13,15 +14,11 @@ class Resource {
     this.config = {
       protocol: 'https',
       host: 'data.usabilla.com',
-      iterator: false
+      iterator: true
     };
 
     this.url = url;
     this.signatureFactory = signatureFactory;
-  }
-
-  getBaseUrl () {
-    return `${this.config.protocol}://${this.config.host}`;
   }
 
   /**
@@ -34,51 +31,58 @@ class Resource {
    * {
    *   id: '5869485767494'
    *   params: {
-   *     limit: 5
+   *     limit: 5,
+   *     since: 1467964293258
    *   }
    * }
    *
    * @param query
    * @returns {Promise}
    */
-  get (query) {
+
+  get(query, results) {
     var query = query || {}
-    var results = [];
-    var hasMore = false;
+    var results = results || [];
+    var that = this;
+    var deferred = Promise.defer();
 
-    return new Promise((resolve, reject) => {
+    this.signatureFactory.setUrl(this.url);
+    this.signatureFactory.handleQuery(query);
+    const signature = this.signatureFactory.sign();
 
-      do {
-        this.signatureFactory.setUrl(this.url);
-        this.signatureFactory.handleQuery(query);
-        const signature = this.signatureFactory.sign();
+    var requestOptions = {
+      protocol: 'https:',
+      host: this.config.host,
+      path: signature.url,
+      headers: signature.headers
+    };
 
-        var requestOptions = {
-          url: this.getBaseUrl() + signature.url,
-          headers: signature.headers
-        };
+    https.get(requestOptions,function(res) {
+      var str = '';
+      var answer = {};
 
-        request(requestOptions, (error, response, body) => {
+      res.on('data',function(chunk) {
+        str += chunk;
+      });
 
-          if (!error && response.statusCode == 200) {
-            var answer = JSON.parse(body);
+      res.on('end',function() {
+        answer = JSON.parse(str);
+        console.log('resAnswer', answer.items.length);
+        results = results.concat(answer.items);
+        console.log('resEnd', results.length);
 
-            hasMore = answer.hasMore;
-            results = results.concat(answer.items);
-            query = assign(query, {params: { since: answer.lastTimestamp }});
-
-          } else {
-            reject(body);
-
-          }
-        });
-
-      }
-      while (this.config.iterator && hasMore);
-
-      resolve(results);
-
+        if (answer.hasMore && that.config.iterator) {
+          query = assign(query, {params: { since: answer.lastTimestamp }});
+          that.get(query, results).then((results) => {
+            deferred.resolve(results);
+          });
+        } else {
+          deferred.resolve(results);
+        }
+      });
     });
+
+    return deferred.promise;
   }
 }
 
