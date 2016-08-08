@@ -37,7 +37,7 @@ api.websites.campaigns.get().then((campaigns) => {
 
   // Get the responses of the first campaign
   api.websites.campaigns.results.get(campaignQuery).then((responses) => {
-    console.log('# campiagn responses', responses.length);
+    console.log('# campaign responses', responses.length);
   });
 
   // Get the stats of the first campaign

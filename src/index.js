@@ -1,7 +1,6 @@
 const moment = require('moment');
 const crypto = require('crypto');
 const assign = require('lodash.assign');
-const request = require('request');
 const https = require('https');
 
 /**
