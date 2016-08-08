@@ -1,7 +1,7 @@
 const moment = require('moment');
 const crypto = require('crypto');
 const assign = require('lodash.assign');
-const request = require('request');
+const https = require('https');
 
 /**
  * Base resource class which takes care of creating the query
@@ -15,10 +15,6 @@ class Resource {
     this.config = config
   }
 
-  getBaseUrl () {
-    return `${this.config.protocol}://${this.config.host}`;
-  }
-
   /**
    * Make a GET call to the API, using the query parameters.
    * To use a specific id you should `id` in the query object.
@@ -29,36 +25,57 @@ class Resource {
    * {
    *   id: '5869485767494'
    *   params: {
-   *     limit: 5
+   *     limit: 5,
+   *     since: 1467964293258
    *   }
    * }
    *
    * @param query
+   * @param results
    * @returns {Promise}
    */
-  get (query) {
-    if (!query) {
-      query = {};
-    }
+
+  get(query, results) {
+    var query = query || {};
+    var results = results || [];
+    var that = this;
+    var deferred = Promise.defer();
 
     this.signatureFactory.setUrl(this.url);
     this.signatureFactory.handleQuery(query);
     const signature = this.signatureFactory.sign();
 
-    const options = {
-      url: this.getBaseUrl() + signature.url,
+    var requestOptions = {
+      protocol: 'https:',
+      host: this.config.host,
+      path: signature.url,
       headers: signature.headers
     };
 
-    return new Promise((resolve, reject) => {
-      request(options, (error, response, body) => {
-        if (!error && response.statusCode == 200) {
-          resolve(JSON.parse(body));
+    https.get(requestOptions, function(res) {
+      var str = '';
+      var answer = {};
+
+      res.on('data', function(chunk) {
+        str += chunk;
+      });
+
+      res.on('end', function() {
+        answer = JSON.parse(str);
+        results = results.concat(answer.items);
+
+        if (answer.hasMore && that.config.iterator) {
+          query = assign(query, {params: { since: answer.lastTimestamp }});
+          that.get(query, results).then((results) => {
+            deferred.resolve(results);
+          });
         } else {
-          reject(body);
+          deferred.resolve(results);
         }
       });
     });
+
+    return deferred.promise;
   }
 }
 
@@ -366,7 +383,7 @@ class Usabilla {
     this.config = {
       method: 'GET',
       host: 'data.usabilla.com',
-      protocol: 'https'
+      iterator: true
     };
 
     const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
