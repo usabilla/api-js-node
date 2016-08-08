@@ -1,4 +1,5 @@
 # Node client for Usabilla API
+
 The Usabilla Client API for Node.js provides access to the Usabilla database from Node.js applications.
 
 The client has the following features:
@@ -6,13 +7,48 @@ The client has the following features:
 * Querying over the feedback with different parameters.
 
 ## Authentication
-The client uses extensive authentication based on a request signing process. For more information, please see our [developers guide](http://developers.usabilla.com)
+
+The client uses extensive authentication based on a request signing process. For more information,
+please see our [developers guide](http://developers.usabilla.com)
 
 ## Getting started
-You are able to install out client via npm
+
+Install node client through npm
+
 ```
-npm install usabilla-api
+$ npm install usabilla-api --save
+```
+
+The example folder contains an running example of the client, which gives an idea
+how the client can be used and what is possible.
+
+```
+$ node example/example.js <your_access_key> <your_secret_secret>
+```
+
+## Contribute
+
+Install the required packages
+
+```
+$ npm install
+```
+
+start the development environment
+
+```
+$ npm start
+```
+
+and run tests with
+
+```
+$ npm test
 ```
 
 ##Support
-The Usabilla Node.js Client API is maintained by Usabilla Development Team. Everyone is encouraged to file bug reports, feature requests, and pull requests through GitHub. This input is critical and will be carefully considered, but we can’t promise a specific resolution or timeframe for any request. For more information please email our Support Team at support@usabilla.com
+
+The Usabilla Node.js Client API is maintained by Usabilla Development Team. Everyone is encouraged to file bug reports,
+feature requests, and pull requests through GitHub. This input is critical and will be carefully considered, but we
+can’t promise a specific resolution or time frame for any request. For more information please email our Support Team
+at support@usabilla.com
