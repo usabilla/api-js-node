@@ -23,7 +23,7 @@ The example folder contains an running example of the client, which gives an ide
 how the client can be used and what is possible.
 
 ```
-$ node example/example.js <your_access_key> <your_secret_secret>
+$ node example/example.js <your_access_key> <your_secret_key>
 ```
 
 ## Contribute
@@ -46,7 +46,7 @@ and run tests with
 $ npm test
 ```
 
-##Support
+## Support
 
 The Usabilla Node.js Client API is maintained by Usabilla Development Team. Everyone is encouraged to file bug reports,
 feature requests, and pull requests through GitHub. This input is critical and will be carefully considered, but we
