@@ -1,4 +1,4 @@
-# Node client for Usabilla Public API
+# Node client for Usabilla API
 The Usabilla Client API for Node.js provides access to the Usabilla database from Node.js applications.
 
 The client has the following features:
