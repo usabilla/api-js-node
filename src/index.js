@@ -392,6 +392,10 @@ class Usabilla {
     this.email = new EmailProduct('/live', signatureFactory, this.config);
     this.apps = new AppsProduct('/live', signatureFactory, this.config);
   }
+
+  configure (options) {
+    assign(this.config, options);
+  }
 }
 
 module.exports = Usabilla;
