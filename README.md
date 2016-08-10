@@ -1,6 +1,8 @@
 # Node client for Usabilla API
 
-The Usabilla Client API for Node.js provides access to the Usabilla database from Node.js applications.
+[![Build Status](https://travis-ci.org/usabilla/api-js-node.svg?branch=master)](https://travis-ci.org/usabilla/api-js-node?branch=master) [![Coverage Status](https://coveralls.io/repos/github/usabilla/api-js-node/badge.svg?branch=master)](https://coveralls.io/github/usabilla/api-js-node?branch=master)
+
+The Usabilla API Client for Node.js provides access to the Usabilla database from Node.js applications.
 
 The client has the following features:
 * Getting the buttons / campaigns / widgets / forms as well as the feedback they contain.
