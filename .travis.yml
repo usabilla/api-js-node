@@ -1,18 +1,21 @@
 language: node_js
 node_js:
-  - "stable"
+- stable
 cache:
   directories:
-    - node_modules
+  - node_modules
 env:
-  - CXX=g++-4.8
+- CXX=g++-4.8
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
+    - g++-4.8
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+notifications:
+  slack:
+    secure: js7ZJU+Xxz9aSVebP4pP7I7HUUuwgUvMEnkhe9RGVg3xkU4wiSRbMH2rH4iY4NGvfsZrFmt08Wob3xxHdInMUMt/Hsogo/6t9+KjoV67NCrKZ3itXxez6lGlwP5Ck9pqu40VKC57xdVl4JFsAksfL0yl3UjcnNivZEKqlr2O1H58Z3EJI4sd0QcFuYcNLUN+D0UVKGC7Gvz4W/Ynrw8GUuo/Yx+ngd+Ezku6TXrWXGfuLNEx95OnT9+OnYICId3jzRBsJlrHHK6apcalPRdXu0ZBhUdwK40gSaSPWJTCALjBrXPC9/CfRiJyoTnZ9W5W7w3SEJY5zR3y5KnGgP7YiW18peOr8jeVnymYBtswldLX7nPJ6g25dC5UyUxpvMWcNRoAQzeHDEmHpZCcdSzSDlMwfFXWhHQYJOYr6vYvKF3RHQIp+AC27fU2trhvPPh/nvRnACB+e+n4pRwMSlGmsVCyByB1X3cgXrmMY1t6On1T8lplaHAAeGzfp+d8zsU9C0HBiJesh2kc8t9NCSR6zPfibixfl4SPPrOC4DcHdN0vhTbOhQ/ZrgTkXXTonZk5N+0r9admoYwNsw7dySfCM+7JmX7EwzZjkJuZJ9v/h19PPMpmBdSH7p8PM53RT4kEzOdeAtzC/lxNS/1CGS6SSZlbWANhOYL9Ol0awFIUCTM=
