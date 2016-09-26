@@ -38,7 +38,6 @@ class Resource {
   get (query, results) {
     var _query = query || {};
     var _results = results || [];
-    var that = this;
 
     this.signatureFactory.setUrl(this.url);
     this.signatureFactory.handleQuery(_query);
@@ -51,28 +50,30 @@ class Resource {
       headers: signature.headers
     };
 
-    return new Promise(function (resolve, reject) {
-      https.get(requestOptions, function (res) {
+    return new Promise((resolve, reject) => {
+      https.get(requestOptions, (res) => {
         var str = '';
         var answer = {};
 
-        res.on('data', function (chunk) {
+        res.on('data', (chunk) => {
           str += chunk;
         });
 
-        res.on('end', function () {
+        res.on('end', () => {
           answer = JSON.parse(str);
           _results = _results.concat(answer.items);
 
-          if (answer.hasMore && that.config.iterator) {
+          if (answer.hasMore && this.config.iterator) {
             _query = assign(_query, {params: {since: answer.lastTimestamp}});
-            that.get(_query, _results).then((results) => {
+            this.get(_query, _results).then((results) => {
               resolve(results);
             });
           } else {
             resolve(_results);
           }
         });
+      }).on('error', (error) => {
+        reject(error);
       });
     });
   }
