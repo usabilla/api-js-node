@@ -1,6 +1,5 @@
 const moment = require('moment');
 const crypto = require('crypto');
-const assign = require('lodash.assign');
 const https = require('https');
 
 /**
@@ -64,7 +63,7 @@ class Resource {
           _results = _results.concat(answer.items);
 
           if (answer.hasMore && this.config.iterator) {
-            _query = assign(_query, {params: {since: answer.lastTimestamp}});
+            _query = Object.assign(_query, {params: {since: answer.lastTimestamp}});
             this.get(_query, _results).then((results) => {
               resolve(results);
             });
@@ -394,7 +393,7 @@ class Usabilla {
   }
 
   configure (options) {
-    assign(this.config, options);
+    Object.assign(this.config, options);
   }
 }
 
