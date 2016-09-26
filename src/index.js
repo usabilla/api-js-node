@@ -35,14 +35,13 @@ class Resource {
    * @returns {Promise}
    */
 
-  get(query, results) {
-    var query = query || {};
-    var results = results || [];
+  get (query, results) {
+    var _query = query || {};
+    var _results = results || [];
     var that = this;
-    var deferred = Promise.defer();
 
     this.signatureFactory.setUrl(this.url);
-    this.signatureFactory.handleQuery(query);
+    this.signatureFactory.handleQuery(_query);
     const signature = this.signatureFactory.sign();
 
     var requestOptions = {
@@ -52,30 +51,30 @@ class Resource {
       headers: signature.headers
     };
 
-    https.get(requestOptions, function(res) {
-      var str = '';
-      var answer = {};
+    return new Promise(function (resolve, reject) {
+      https.get(requestOptions, function (res) {
+        var str = '';
+        var answer = {};
 
-      res.on('data', function(chunk) {
-        str += chunk;
-      });
+        res.on('data', function (chunk) {
+          str += chunk;
+        });
 
-      res.on('end', function() {
-        answer = JSON.parse(str);
-        results = results.concat(answer.items);
+        res.on('end', function () {
+          answer = JSON.parse(str);
+          _results = _results.concat(answer.items);
 
-        if (answer.hasMore && that.config.iterator) {
-          query = assign(query, {params: { since: answer.lastTimestamp }});
-          that.get(query, results).then((results) => {
-            deferred.resolve(results);
-          });
-        } else {
-          deferred.resolve(results);
-        }
+          if (answer.hasMore && that.config.iterator) {
+            _query = assign(_query, {params: {since: answer.lastTimestamp}});
+            that.get(_query, _results).then((results) => {
+              resolve(results);
+            });
+          } else {
+            resolve(_results);
+          }
+        });
       });
     });
-
-    return deferred.promise;
   }
 }
 
