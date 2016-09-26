@@ -42,7 +42,7 @@ api.websites.campaigns.get().then((campaigns) => {
 
   // Get the stats of the first campaign
   api.websites.campaigns.stats.get(campaignQuery).then((stats) => {
-    console.log('# campaign stats', stats.length);
+    console.log('campaign stats', stats);
   });
 });
 
