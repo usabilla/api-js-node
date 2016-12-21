@@ -35,14 +35,14 @@ class Resource {
    */
 
   get (query, results) {
-    var _query = query || {};
-    var _results = results || [];
+    let _query = query || {};
+    let _results = results || [];
 
     this.signatureFactory.setUrl(this.url);
     this.signatureFactory.handleQuery(_query);
     const signature = this.signatureFactory.sign();
 
-    var requestOptions = {
+    let requestOptions = {
       protocol: 'https:',
       host: this.config.host,
       path: signature.url,
@@ -51,8 +51,8 @@ class Resource {
 
     return new Promise((resolve, reject) => {
       https.get(requestOptions, (res) => {
-        var str = '';
-        var answer = {};
+        let str = '';
+        let answer = {};
 
         res.on('data', (chunk) => {
           str += chunk;
@@ -335,9 +335,9 @@ class SignatureFactory {
     }
 
     if (!!query.params) {
-      var params = [];
+      let params = [];
 
-      for (var k in query.params) {
+      for (let k in query.params) {
         if (query.params.hasOwnProperty(k)) {
           params.push(k);
         }
@@ -345,7 +345,7 @@ class SignatureFactory {
       params.sort();
 
       this.queryParameters = '';
-      for (var i = 0; i < params.length; i++) {
+      for (let i = 0; i < params.length; i++) {
         this.queryParameters += params[i] + '=' + query.params[params[i]] + '&';
       }
 
