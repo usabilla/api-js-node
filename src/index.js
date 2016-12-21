@@ -60,6 +60,9 @@ class Resource {
 
         res.on('end', () => {
           answer = JSON.parse(str);
+          if (answer.error) {
+            reject(answer.error);
+          }
           _results = _results.concat(answer.items);
 
           if (answer.hasMore && this.config.iterator) {
