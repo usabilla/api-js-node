@@ -7,7 +7,10 @@
     "moment": "^2.15.1"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.14.0",
+    "babel-core": "^6.21.0",
+    "babel-polyfill": "^6.20.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
     "browserify-istanbul": "^2.0.0",
@@ -22,6 +25,7 @@
     "karma-coverage": "^1.1.1",
     "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^1.0.2",
+    "wallabify": "0.0.14",
     "watchify": "^3.7.0"
   },
   "scripts": {
