@@ -267,13 +267,20 @@ class SignatureFactory {
   }
 
   canonicalString () {
+
+    // CanonicalHeaders
+    CanonicalHeaders = [
+      `host:${this.host}\n`,
+      `x-usbl-date:${this.dates.longdate}\n`
+    ].join('');
+
     return [
-      this.method || 'GET',               // HTTPRequestMethod
-      this.url,                           // CanonicalURI
-      this.queryParameters,               // CanonicalQueryString
-      `host:${this.host}`+ '\n' + `x-usbl-date:${this.dates.longdate}`+ '\n', // CanonicalHeaders
-      'host;x-usbl-date',                 // SignedHeaders
-      this.hash('', 'hex')                // HexEncode(Hash(RequestPayload))
+      this.method || 'GET',     // HTTPRequestMethod
+      this.url,                 // CanonicalURI
+      this.queryParameters,     // CanonicalQueryString
+      CanonicalHeaders          // CanonicalHeaders
+      'host;x-usbl-date',       // SignedHeaders
+      this.hash('', 'hex')      // HexEncode(Hash(RequestPayload))
     ].join('\n');
   };
 
