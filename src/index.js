@@ -265,30 +265,21 @@ class SignatureFactory {
     this.method = method;
   }
 
-  getCanonicalHeaders () {
-    return {
-      date: `date:${this.dates.usbldate}`,
-      host: `host:${this.host}\n`
-    };
-  }
-
   hash (string, encoding) {
     return crypto.createHash('sha256').update(string, 'utf8').digest(encoding);
   }
 
   canonicalString () {
-    const queryStr = this.queryParameters;
-    const bodyHash = this.hash('', 'hex');
-    const canonicalHeaders = this.getCanonicalHeaders();
+    // CanonicalHeaders
+    let canonicalHeaders = `host:${this.host}\n` + `x-usbl-date:${this.dates.longdate}\n`;
 
     return [
-      this.method || 'GET',
-      this.url,
-      queryStr,
-      canonicalHeaders.date,
-      canonicalHeaders.host,
-      'date;host',
-      bodyHash
+      this.method || 'GET',     // HTTPRequestMethod
+      this.url,                 // CanonicalURI
+      this.queryParameters,     // CanonicalQueryString
+      canonicalHeaders,         // CanonicalHeaders
+      'host;x-usbl-date',       // SignedHeaders
+      this.hash('', 'hex')      // HexEncode(Hash(RequestPayload))
     ].join('\n');
   };
 
@@ -298,10 +289,10 @@ class SignatureFactory {
 
   stringToSign () {
     return [
-      'USBL1-HMAC-SHA256',
-      this.dates.longdate,
-      this.dates.shortdate + '/' + 'usbl1_request',
-      this.hash(this.canonicalString(), 'hex')
+      'USBL1-HMAC-SHA256',                          // Algorithm
+      this.dates.longdate,                          // RequestDate
+      this.dates.shortdate + '/' + 'usbl1_request', // CredentialScope
+      this.hash(this.canonicalString(), 'hex')      // HashedCanonicalRequest
     ].join('\n');
   };
 
@@ -315,7 +306,7 @@ class SignatureFactory {
   authHeader () {
     return [
       'USBL1-HMAC-SHA256 Credential=' + this.accessKey + '/' + this.dates.shortdate + '/' + 'usbl1_request',
-      'SignedHeaders=' + 'date;host',
+      'SignedHeaders=' + 'host;x-usbl-date',
       'Signature=' + this.getSignature()
     ].join(', ');
   };
@@ -359,8 +350,8 @@ class SignatureFactory {
   sign () {
     this.dates = this.getDateTime();
     this.headers = {};
-    this.headers.date = this.dates.usbldate;
-    this.headers.Authorization = this.authHeader();
+    this.headers['Authorization'] = this.authHeader();
+    this.headers['x-usbl-date'] = this.dates.longdate;
 
     const response = {
       headers: this.headers,
