@@ -267,12 +267,8 @@ class SignatureFactory {
   }
 
   canonicalString () {
-
     // CanonicalHeaders
-    let CanonicalHeaders = [
-      `host:${this.host}\n`,
-      `x-usbl-date:${this.dates.longdate}\n`
-    ].join('');
+    let canonicalHeaders = `host:${this.host}\n` + `x-usbl-date:${this.dates.longdate}\n`;
 
     return [
       this.method || 'GET',     // HTTPRequestMethod
