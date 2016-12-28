@@ -9,7 +9,6 @@ const api = new usabilla(args[0], args[1]);
 
 // Get all buttons for this account.
 api.websites.buttons.get().then((buttons) => {
-
   // Use the button id to get feedback for this button id.
   var buttonFeedbackQuery = {
     id: buttons[0].id,
@@ -42,7 +41,7 @@ api.websites.campaigns.get().then((campaigns) => {
 
   // Get the stats of the first campaign
   api.websites.campaigns.stats.get(campaignQuery).then((stats) => {
-    console.log('campaign stats', stats);
+    console.log('# campaign stats', stats.length);
   });
 });
 
