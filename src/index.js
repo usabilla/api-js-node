@@ -269,7 +269,7 @@ class SignatureFactory {
   canonicalString () {
 
     // CanonicalHeaders
-    CanonicalHeaders = [
+    let CanonicalHeaders = [
       `host:${this.host}\n`,
       `x-usbl-date:${this.dates.longdate}\n`
     ].join('');
@@ -278,7 +278,7 @@ class SignatureFactory {
       this.method || 'GET',     // HTTPRequestMethod
       this.url,                 // CanonicalURI
       this.queryParameters,     // CanonicalQueryString
-      CanonicalHeaders          // CanonicalHeaders
+      CanonicalHeaders,         // CanonicalHeaders
       'host;x-usbl-date',       // SignedHeaders
       this.hash('', 'hex')      // HexEncode(Hash(RequestPayload))
     ].join('\n');
