@@ -274,7 +274,7 @@ class SignatureFactory {
       this.method || 'GET',     // HTTPRequestMethod
       this.url,                 // CanonicalURI
       this.queryParameters,     // CanonicalQueryString
-      CanonicalHeaders,         // CanonicalHeaders
+      canonicalHeaders,         // CanonicalHeaders
       'host;x-usbl-date',       // SignedHeaders
       this.hash('', 'hex')      // HexEncode(Hash(RequestPayload))
     ].join('\n');
