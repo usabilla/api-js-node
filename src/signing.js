@@ -1,39 +1,111 @@
 "use strict";
 const moment = require('moment');
 const crypto = require('crypto');
-const https = require('https');
 
+/**
+ * This class is the factory for creating the signature describing
+ * and securing the request based on;
+ * - headers
+ * - HTTP method
+ * - URL + Query parameters
+ */
 class SignatureFactory {
 
   constructor (accessKey, secretKey, host) {
     this.accessKey = accessKey;
     this.secretKey = secretKey;
     this.host = host;
+
+    this.method = 'GET';
+    this.headers = {};
   }
 
   setUrl (url) {
+    // mandatory
     this.url = url;
   }
 
   setMethod (method) {
+    // optional
     this.method = method;
+  }
+
+  setHeaders (headers) {
+    // optional
+    Object.assign(this.headers, headers);
+  }
+
+  handleQuery (query) {
+    // mandatory
+    // Transform URL based on query
+    if (query.id && query.id != '') {
+      if (query.id == '*') {
+        query.id = '%2A';
+      }
+      this.url = this.url.replace(':id', query.id);
+    }
+
+    // Set queryParameters based on query
+    if (!!query.params) {
+      var params = [];
+
+      for (var k in query.params) {
+        if (query.params.hasOwnProperty(k)) {
+          params.push(k);
+        }
+      }
+      params.sort();
+
+      this.queryParameters = '';
+      for (var i = 0; i < params.length; i++) {
+        this.queryParameters += params[i] + '=' + query.params[params[i]] + '&';
+      }
+
+      this.queryParameters = this.queryParameters.slice(0, -1);
+    }
   }
 
   hash (string, encoding) {
     return crypto.createHash('sha256').update(string, 'utf8').digest(encoding);
   }
 
-  canonicalString () {
-    // CanonicalHeaders
-    let canonicalHeaders = `host:${this.host}\n` + `x-usbl-date:${this.dates.longdate}\n`;
+  getHeadersToSign () {
+    // add host to headers
+    let headers = Object.assign(this.headers, {host: this.host});
 
+    // delete possible caches Authorization header
+    delete headers.Authorization;
+
+    // sort headers
+    return Object.keys(headers).sort().reduce((r, k) => (r[k] = headers[k], r), {});
+  }
+
+  /**
+   * Example;
+   * 'host:https://data.usabilla.com\nx-usbl-date:${this.dates.longdate}\n'
+   */
+  getCanonicalHeaders () {
+    let headers = this.getHeadersToSign();
+    return Object.keys(headers).map(function(k) { return [k, headers[k] + '\n'].join(':') }).join('');
+  }
+
+  /**
+   * Example;
+   * 'host;x-usbl-date'
+   */
+  getSignedHeaders () {
+    let headers = this.getHeadersToSign();
+    return Object.keys(headers).join(';');
+  }
+
+  canonicalString () {
     return [
-      this.method || 'GET',     // HTTPRequestMethod
-      this.url,                 // CanonicalURI
-      this.queryParameters,     // CanonicalQueryString
-      canonicalHeaders,         // CanonicalHeaders
-      'host;x-usbl-date',       // SignedHeaders
-      this.hash('', 'hex')      // HexEncode(Hash(RequestPayload))
+      this.method,                // HTTPRequestMethod
+      this.url,                   // CanonicalURI
+      this.queryParameters,       // CanonicalQueryString
+      this.getCanonicalHeaders(), // CanonicalHeaders
+      this.getSignedHeaders(),    // SignedHeaders
+      this.hash('', 'hex')        // HexEncode(Hash(RequestPayload))
     ].join('\n');
   };
 
@@ -58,9 +130,12 @@ class SignatureFactory {
   }
 
   authHeader () {
+    this.dates = this.getDateTime();
+    this.headers['x-usbl-date'] = this.dates.longdate;
+
     return [
       'USBL1-HMAC-SHA256 Credential=' + this.accessKey + '/' + this.dates.shortdate + '/' + 'usbl1_request',
-      'SignedHeaders=' + 'host;x-usbl-date',
+      'SignedHeaders=' + this.getSignedHeaders(),
       'Signature=' + this.getSignature()
     ].join(', ');
   };
@@ -74,49 +149,18 @@ class SignatureFactory {
     return dates;
   }
 
-  handleQuery (query) {
-    if (query.id && query.id != '') {
-      if (query.id == '*') {
-        query.id = '%2A';
-      }
-      this.url = this.url.replace(':id', query.id);
-    }
-
-    if (!!query.params) {
-      var params = [];
-
-      for (var k in query.params) {
-        if (query.params.hasOwnProperty(k)) {
-          params.push(k);
-        }
-      }
-      params.sort();
-
-      this.queryParameters = '';
-      for (var i = 0; i < params.length; i++) {
-        this.queryParameters += params[i] + '=' + query.params[params[i]] + '&';
-      }
-
-      this.queryParameters = this.queryParameters.slice(0, -1);
-    }
-  }
-
   sign () {
-    this.dates = this.getDateTime();
-    this.headers = {};
     this.headers['Authorization'] = this.authHeader();
-    this.headers['x-usbl-date'] = this.dates.longdate;
 
-    const response = {
-      headers: this.headers,
-      url: this.url
-    };
-
+    let url = this.url
     if (this.queryParameters) {
-      response.url = `${response.url}?${this.queryParameters}`;
+      url = `${url}?${this.queryParameters}`;
     }
 
-    return response;
+    return {
+      headers: this.headers,
+      url: url
+    };
   }
 }
 

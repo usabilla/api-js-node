@@ -1,6 +1,4 @@
 "use strict";
-const moment = require('moment');
-const crypto = require('crypto');
 const https = require('https');
 
 /**
@@ -40,6 +38,7 @@ class Resource {
     var _results = results || [];
 
     this.signatureFactory.setUrl(this.url);
+    this.signatureFactory.setHeaders({'user-agent': 'Usabilla API Client for Node.js'});
     this.signatureFactory.handleQuery(_query);
     const signature = this.signatureFactory.sign();
 
