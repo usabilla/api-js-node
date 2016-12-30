@@ -1,3 +1,4 @@
+'use strict';
 const SignatureFactory = require('./../src/signing.js');
 const resources = require('./../src/resources.js');
 
