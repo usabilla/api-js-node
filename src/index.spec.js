@@ -7,10 +7,6 @@ describe('Usabilla', () => {
     usabilla = new Usabilla();
   });
 
-  afterEach(() => {
-    usabilla = null;
-  });
-
   it('should have proper config on init', () => {
     const config = usabilla.configure({foo: 'bar'});
     expect(config).toEqual({
