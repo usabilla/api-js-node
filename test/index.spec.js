@@ -1,4 +1,4 @@
-import Usabilla from '../src/index';
+const Usabilla = require('../src/index');
 
 describe('Usabilla', function() {
 
