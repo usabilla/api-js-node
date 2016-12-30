@@ -32,7 +32,9 @@ class SignatureFactory {
 
   setHeaders (headers) {
     // optional
-    Object.assign(this.headers, headers);
+    for (let key in headers) {
+      this.headers[key] = headers[key];
+    }
   }
 
   handleQuery (query) {
@@ -68,7 +70,8 @@ class SignatureFactory {
 
   getHeadersToSign () {
     // add host to headers
-    let headers = Object.assign(this.headers, {host: this.host});
+    this.headers.host = this.host;
+    let headers = this.headers;
 
     // delete possible cached Authorization header
     delete headers.Authorization;

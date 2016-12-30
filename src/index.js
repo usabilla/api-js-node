@@ -23,7 +23,10 @@ class Usabilla {
   }
 
   configure (options) {
-    return Object.assign(this.config, options);
+    for (let key in options) {
+      this.config[key] = options[key];
+    }
+    return this.config;
   }
 }
 
