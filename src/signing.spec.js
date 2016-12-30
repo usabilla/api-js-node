@@ -1,8 +1,11 @@
 const SignatureFactory = require('./../src/signing.js');
 
 describe('Signing', () => {
+
+  let signatureFactory;
+
   describe('SignatureFactory', () => {
-    let signatureFactory;
+
 
     beforeEach(() => {
       signatureFactory = new SignatureFactory();
