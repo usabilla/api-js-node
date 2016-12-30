@@ -5,64 +5,64 @@ describe('Signing', () => {
   describe('SignatureFactory', () => {
 
     beforeEach(() => {
-      this.signatureFactory = new SignatureFactory();
+      signatureFactory = new SignatureFactory();
     })
 
     it ('should set a URL', () => {
-      this.signatureFactory.  setUrl('foobar')
-      expect(this.signatureFactory.  url).toEqual('foobar');
+      signatureFactory.setUrl('foobar')
+      expect(signatureFactory.url).toEqual('foobar');
     });
 
     it ('should set a Method', () => {
-      this.signatureFactory.  setMethod('foobar')
-      expect(this.signatureFactory.  method).toEqual('foobar');
+      signatureFactory.setMethod('foobar')
+      expect(signatureFactory.method).toEqual('foobar');
     });
 
     it ('should set Headers', () => {
       //init
-      this.signatureFactory.  headers = {fooA: 'barA'};
+      signatureFactory.headers = {fooA: 'barA'};
 
-      this.signatureFactory.  setHeaders({fooB: 'barB'});
+      signatureFactory.setHeaders({fooB: 'barB'});
 
-      expect(this.signatureFactory.  headers).toEqual({fooA: 'barA', fooB: 'barB'});
+      expect(signatureFactory.headers).toEqual({fooA: 'barA', fooB: 'barB'});
     });
 
     describe('handleQuery', () => {
 
       it ('should transform URL based on query with id', () => {
-        this.signatureFactory.  url = 'bar/:id/bar'
+        signatureFactory.url = 'bar/:id/bar'
         let query = {
           id: 'foo'
         }
 
-        this.signatureFactory.  handleQuery(query);
+        signatureFactory.handleQuery(query);
 
-        expect(this.signatureFactory.  url).toEqual('bar/foo/bar');
+        expect(signatureFactory.url).toEqual('bar/foo/bar');
       });
 
       it ('should transform URL based on query without id', () => {
-        this.signatureFactory.  url = 'bar/:id/bar'
+        signatureFactory.url = 'bar/:id/bar'
         let query = {
         }
 
-        this.signatureFactory.  handleQuery(query);
+        signatureFactory.handleQuery(query);
 
-        expect(this.signatureFactory.  url).toEqual('bar/:id/bar');
+        expect(signatureFactory.url).toEqual('bar/:id/bar');
       });
 
       it ('should transform URL based on query with star id', () => {
-        this.signatureFactory.  url = 'bar/:id/bar'
+        signatureFactory.url = 'bar/:id/bar'
         let query = {
           id: '*'
         }
 
-        this.signatureFactory.  handleQuery(query);
+        signatureFactory.handleQuery(query);
 
-        expect(this.signatureFactory.  url).toEqual('bar/%2A/bar');
+        expect(signatureFactory.url).toEqual('bar/%2A/bar');
       });
 
       it ('should transform URL based on query with star id', () => {
-        this.signatureFactory.  url = 'bar/:id/bar'
+        signatureFactory.url = 'bar/:id/bar'
         let query = {
           params: {
             limit: 'foo',
@@ -70,9 +70,9 @@ describe('Signing', () => {
           }
         }
 
-        this.signatureFactory.  handleQuery(query);
+        signatureFactory.handleQuery(query);
 
-        expect(this.signatureFactory.  queryParameters).toEqual('limit=foo&since=bar');
+        expect(signatureFactory.queryParameters).toEqual('limit=foo&since=bar');
       });
 
     });
@@ -83,13 +83,13 @@ describe('Signing', () => {
 
       //init
       beforeEach(() => {
-        this.signatureFactory.  host = 'foobar';
-        this.signatureFactory.  headers = {
+        signatureFactory.host = 'foobar';
+        signatureFactory.headers = {
           fooB: 'barB',
           fooA: 'barA'
         };
 
-        headers = this.signatureFactory.  getHeadersToSign();
+        headers = signatureFactory.getHeadersToSign();
       })
 
       it ('should add add host header', () => {
@@ -112,35 +112,35 @@ describe('Signing', () => {
 
     it ('should getCanonicalHeaders', () => {
       //init
-      this.signatureFactory.  host = 'foobar';
-      this.signatureFactory.  headers = {
+      signatureFactory.host = 'foobar';
+      signatureFactory.headers = {
         fooB: 'barB',
         fooA: 'barA'
       };
 
-      let headers = this.signatureFactory.  getCanonicalHeaders();
+      let headers = signatureFactory.getCanonicalHeaders();
 
       expect(headers).toEqual('fooA:barA\nfooB:barB\nhost:foobar\n');
     });
 
     it ('should getSignedHeaders', () => {
       //init
-      this.signatureFactory.  host = 'foobar';
-      this.signatureFactory.  headers = {
+      signatureFactory.host = 'foobar';
+      signatureFactory.headers = {
         fooB: 'barB',
         fooA: 'barA'
       };
 
-      let headers = this.signatureFactory.  getSignedHeaders();
+      let headers = signatureFactory.getSignedHeaders();
 
       expect(headers).toEqual('fooA;fooB;host');
     });
 
     it ('should canonicalString', () => {
-      this.signatureFactory.  method = 'GET';
-      this.signatureFactory.  url = 'url_foobar';
-      this.signatureFactory.  host = 'host_foobar';
-      let canonicalString = this.signatureFactory.  canonicalString();
+      signatureFactory.method = 'GET';
+      signatureFactory.url = 'url_foobar';
+      signatureFactory.host = 'host_foobar';
+      let canonicalString = signatureFactory.canonicalString();
 
       expect(canonicalString).toEqual([
         'GET',
@@ -156,7 +156,7 @@ describe('Signing', () => {
 
     it ('should getDateTime', () => {
       //FIX ME
-      let time = this.signatureFactory.  getDateTime();
+      let time = signatureFactory.getDateTime();
 
       expect(time.hasOwnProperty('usbldate')).toBeTruthy()
       expect(time.hasOwnProperty('shortdate')).toBeTruthy()
