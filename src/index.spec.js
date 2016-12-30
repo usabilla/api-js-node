@@ -1,24 +1,23 @@
 const Usabilla = require('./../src/index.js');
 
-describe('Index', () => {
-  describe('Usabilla', () => {
-    let usabilla;
+describe('Usabilla', () => {
+  let usabilla;
 
-    beforeEach(() => {
-      usabilla = new Usabilla();
-    });
+  beforeEach(() => {
+    usabilla = new Usabilla();
+  });
 
-    it('should have proper config on init', () => {
-      let config = usabilla.configure({foo: 'bar'});
+  afterEach(() => {
+    usabilla = null;
+  });
 
-      let expected_config = {
-        method: 'GET',
-        host: 'data.usabilla.com',
-        iterator: true,
-        foo: 'bar'
-      }
-
-      expect(config).toEqual(expected_config);
+  it('should have proper config on init', () => {
+    const config = usabilla.configure({foo: 'bar'});
+    expect(config).toEqual({
+      method: 'GET',
+      host: 'data.usabilla.com',
+      iterator: true,
+      foo: 'bar'
     });
   });
 });
