@@ -78,7 +78,7 @@ describe('Signing', () => {
     });
 
 
-    describe('SignatureFactory', () => {
+    describe('getHeadersToSign', () => {
       let headers;
 
       //init
