@@ -4,7 +4,9 @@ describe('Signing', () => {
   describe('SignatureFactory', () => {
     let signatureFactory;
 
-    signatureFactory = new SignatureFactory();
+    beforeEach(() => {
+      signatureFactory = new SignatureFactory();
+    })
 
     it ('should set a URL', () => {
       signatureFactory.setUrl('foobar')
