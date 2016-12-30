@@ -2,13 +2,9 @@ const SignatureFactory = require('./../src/signing.js');
 
 describe('Signing', () => {
   describe('SignatureFactory', () => {
-    var signatureFactory;
+    let signatureFactory;
 
-    beforeEach(() => {
-      signatureFactory = new SignatureFactory();
-
-    })
-
+    signatureFactory = new SignatureFactory();
 
     it ('should set a URL', () => {
       signatureFactory.setUrl('foobar')
