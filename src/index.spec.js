@@ -1,13 +1,14 @@
-import Usabilla from './index';
+const Usabilla = require('./../src/index.js');
 
 describe('Index', () => {
   describe('Usabilla', () => {
     let usabilla;
 
-    usabilla = new Usabilla();
+    beforeEach(() => {
+      usabilla = new Usabilla();
+    });
 
     it('should have proper config on init', () => {
-
       let config = usabilla.configure({foo: 'bar'});
 
       let expected_config = {
