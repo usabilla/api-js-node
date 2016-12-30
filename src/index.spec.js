@@ -1,6 +1,6 @@
 import Usabilla from './index';
 
-describe('usabilla api', () => {
+describe('Index', () => {
   describe('Usabilla', () => {
     let usabilla;
 
