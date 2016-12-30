@@ -73,10 +73,10 @@ class SignatureFactory {
     // add host to headers
     let headers = Object.assign(this.headers, {host: this.host});
 
-    // delete possible caches Authorization header
+    // delete possible cached Authorization header
     delete headers.Authorization;
 
-    // sort headers
+    // sort headers alphabetically
     return Object.keys(headers).sort().reduce((r, k) => (r[k] = headers[k], r), {});
   }
 

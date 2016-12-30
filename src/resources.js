@@ -1,5 +1,6 @@
-"use strict";
+'use strict';
 const https = require('https');
+const pjson = require('./../package.json');
 
 /**
  * Base resource class which takes care of creating the query
@@ -38,7 +39,7 @@ class Resource {
     var _results = results || [];
 
     this.signatureFactory.setUrl(this.url);
-    this.signatureFactory.setHeaders({'user-agent': 'Usabilla API Client for Node.js'});
+    this.signatureFactory.setHeaders({'user-agent': `Usabilla API Client for Node.js/${pjson.version}`});
     this.signatureFactory.handleQuery(_query);
     const signature = this.signatureFactory.sign();
 
