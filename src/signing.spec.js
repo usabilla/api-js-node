@@ -6,12 +6,8 @@ describe('Signing', () => {
 
     let signatureFactory;
 
-    beforeEach(() => {
+    beforeAll(() => {
       signatureFactory = new SignatureFactory();
-    })
-
-    beforeEach(() => {
-      delete signatureFactory
     })
 
     it ('should set a URL', () => {
