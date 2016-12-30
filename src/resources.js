@@ -39,7 +39,7 @@ class Resource {
     var _results = results || [];
 
     this.signatureFactory.setUrl(this.url);
-    this.signatureFactory.setHeaders({'user-agent': `Usabilla API Client for Node.js/${pjson.version}`});
+    this.signatureFactory.setHeaders({'user-agent': `Usabilla API Node Client/${pjson.version}`});
     this.signatureFactory.handleQuery(_query);
     const signature = this.signatureFactory.sign();
 
