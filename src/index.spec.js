@@ -4,16 +4,20 @@ describe('Index', () => {
   describe('Usabilla', () => {
     let usabilla;
 
-    beforeEach(() => {
-      usabilla = new Usabilla();
-    });
+    usabilla = new Usabilla();
 
     it('should have proper config on init', () => {
-      expect(usabilla.config).toEqual({
+
+      let config = usabilla.configure({foo: 'bar'});
+
+      let expected_config = {
         method: 'GET',
         host: 'data.usabilla.com',
-        iterator: true
-      });
+        iterator: true,
+        foo: 'bar'
+      }
+
+      expect(config).toEqual(expected_config);
     });
   });
 });

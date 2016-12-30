@@ -23,7 +23,7 @@ class Usabilla {
   }
 
   configure (options) {
-    Object.assign(this.config, options);
+    return Object.assign(this.config, options);
   }
 }
 
