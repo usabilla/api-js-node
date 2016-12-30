@@ -8,7 +8,7 @@ const https = require('https');
  */
 class Resource {
 
-  constructor (url, signatureFactory, config) {
+  constructor(url, signatureFactory, config) {
     this.url = url;
     this.signatureFactory = signatureFactory;
     this.config = config
@@ -34,7 +34,7 @@ class Resource {
    * @returns {Promise}
    */
 
-  get (query, results) {
+  get(query, results) {
     let _query = query || {};
     let _results = results || [];
 
@@ -86,7 +86,7 @@ class Resource {
  */
 class FormsFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -96,7 +96,7 @@ class FormsFeedbackResource extends Resource {
  */
 class FormsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}`;
     super(baseUrl, signatureFactory, config);
 
@@ -109,7 +109,7 @@ class FormsResource extends Resource {
  */
 class WidgetFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -119,7 +119,7 @@ class WidgetFeedbackResource extends Resource {
  */
 class WidgetsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/button`;
     super(baseUrl, signatureFactory, config);
 
@@ -132,7 +132,7 @@ class WidgetsResource extends Resource {
  */
 class InPageFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -142,7 +142,7 @@ class InPageFeedbackResource extends Resource {
  */
 class InPageResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/inpage`;
     super(baseUrl, signatureFactory, config);
 
@@ -156,7 +156,7 @@ class InPageResource extends Resource {
  */
 class CampaignsResultsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/:id/results`;
     super(baseUrl, signatureFactory, config);
   }
@@ -168,7 +168,7 @@ class CampaignsResultsResource extends Resource {
  */
 class CampaignsStatsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/:id/stats`;
     super(baseUrl, signatureFactory, config);
   }
@@ -179,7 +179,7 @@ class CampaignsStatsResource extends Resource {
  */
 class CampaignsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/campaign`;
     super(baseUrl, signatureFactory, config);
 
@@ -193,7 +193,7 @@ class CampaignsResource extends Resource {
  */
 class ButtonFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -203,7 +203,7 @@ class ButtonFeedbackResource extends Resource {
  */
 class ButtonsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/button`;
     super(baseUrl, signatureFactory, config);
 
@@ -216,7 +216,7 @@ class ButtonsResource extends Resource {
  */
 class WebsitesProduct {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/websites`;
 
     this.buttons = new ButtonsResource(baseUrl, signatureFactory, config);
@@ -230,7 +230,7 @@ class WebsitesProduct {
  */
 class EmailProduct {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/email`;
 
     this.widgets = new WidgetsResource(baseUrl, signatureFactory, config);
@@ -242,7 +242,7 @@ class EmailProduct {
  */
 class AppsProduct {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/apps`;
 
     this.forms = new FormsResource(baseUrl, signatureFactory, config);
@@ -251,25 +251,25 @@ class AppsProduct {
 
 class SignatureFactory {
 
-  constructor (accessKey, secretKey, host) {
+  constructor(accessKey, secretKey, host) {
     this.accessKey = accessKey;
     this.secretKey = secretKey;
     this.host = host;
   }
 
-  setUrl (url) {
+  setUrl(url) {
     this.url = url;
   }
 
-  setMethod (method) {
+  setMethod(method) {
     this.method = method;
   }
 
-  hash (string, encoding) {
+  hash(string, encoding) {
     return crypto.createHash('sha256').update(string, 'utf8').digest(encoding);
   }
 
-  canonicalString () {
+  canonicalString() {
     // CanonicalHeaders
     let canonicalHeaders = `host:${this.host}\n` + `x-usbl-date:${this.dates.longdate}\n`;
 
@@ -283,11 +283,11 @@ class SignatureFactory {
     ].join('\n');
   };
 
-  hmac (key, string, encoding) {
+  hmac(key, string, encoding) {
     return crypto.createHmac('sha256', key).update(string, 'utf8').digest(encoding);
   }
 
-  stringToSign () {
+  stringToSign() {
     return [
       'USBL1-HMAC-SHA256',                          // Algorithm
       this.dates.longdate,                          // RequestDate
@@ -296,14 +296,14 @@ class SignatureFactory {
     ].join('\n');
   };
 
-  getSignature () {
+  getSignature() {
     const kDate = this.hmac('USBL1' + this.secretKey, this.dates.shortdate);
     const kSigning = this.hmac(kDate, 'usbl1_request');
 
     return this.hmac(kSigning, this.stringToSign(), 'hex');
   }
 
-  authHeader () {
+  authHeader() {
     return [
       'USBL1-HMAC-SHA256 Credential=' + this.accessKey + '/' + this.dates.shortdate + '/' + 'usbl1_request',
       'SignedHeaders=' + 'host;x-usbl-date',
@@ -311,7 +311,7 @@ class SignatureFactory {
     ].join(', ');
   };
 
-  getDateTime () {
+  getDateTime() {
     const dates = {};
     dates.usbldate = moment().format('ddd, DD MMM YYYY HH:mm:ss') + ' GMT';
     dates.shortdate = moment().format('YYYYMMDD');
@@ -320,7 +320,7 @@ class SignatureFactory {
     return dates;
   }
 
-  handleQuery (query) {
+  handleQuery(query) {
     if (query.id && query.id != '') {
       if (query.id == '*') {
         query.id = '%2A';
@@ -347,7 +347,7 @@ class SignatureFactory {
     }
   }
 
-  sign () {
+  sign() {
     this.dates = this.getDateTime();
     this.headers = {};
     this.headers['Authorization'] = this.authHeader();
@@ -372,7 +372,7 @@ class SignatureFactory {
  */
 class Usabilla {
 
-  constructor (accessKey, secretKey) {
+  constructor(accessKey, secretKey) {
     this.config = {
       method: 'GET',
       host: 'data.usabilla.com',
@@ -386,7 +386,7 @@ class Usabilla {
     this.apps = new AppsProduct('/live', signatureFactory, this.config);
   }
 
-  configure (options) {
+  configure(options) {
     Object.assign(this.config, options);
   }
 }

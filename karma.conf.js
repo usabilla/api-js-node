@@ -1,7 +1,7 @@
 const istanbul = require('browserify-istanbul');
 const isparta = require('isparta');
 
-module.exports = function (config) {
+module.exports = function(config) {
   var base = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
