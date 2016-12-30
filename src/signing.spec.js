@@ -18,7 +18,7 @@ describe('Signing', () => {
       expect(signatureFactory.method).toEqual('foobar');
     });
 
-    it ('should set Headers', () => {
+    xit ('should set Headers', () => {
       //init
       signatureFactory.headers = {fooA: 'barA'};
 
@@ -27,7 +27,7 @@ describe('Signing', () => {
       expect(signatureFactory.headers).toEqual({fooA: 'barA', fooB: 'barB'});
     });
 
-    describe('handleQuery', () => {
+    xdescribe('handleQuery', () => {
 
       it ('should transform URL based on query with id', () => {
         signatureFactory.url = 'bar/:id/bar'
@@ -74,11 +74,9 @@ describe('Signing', () => {
 
         expect(signatureFactory.queryParameters).toEqual('limit=foo&since=bar');
       });
-
     });
 
-
-    describe('getHeadersToSign', () => {
+    xdescribe('getHeadersToSign', () => {
       let headers;
 
       //init
@@ -110,7 +108,7 @@ describe('Signing', () => {
       });
     });
 
-    it ('should getCanonicalHeaders', () => {
+    xit ('should getCanonicalHeaders', () => {
       //init
       signatureFactory.host = 'foobar';
       signatureFactory.headers = {
@@ -123,7 +121,7 @@ describe('Signing', () => {
       expect(headers).toEqual('fooA:barA\nfooB:barB\nhost:foobar\n');
     });
 
-    it ('should getSignedHeaders', () => {
+    xit ('should getSignedHeaders', () => {
       //init
       signatureFactory.host = 'foobar';
       signatureFactory.headers = {
@@ -136,7 +134,7 @@ describe('Signing', () => {
       expect(headers).toEqual('fooA;fooB;host');
     });
 
-    it ('should canonicalString', () => {
+    xit ('should canonicalString', () => {
       signatureFactory.method = 'GET';
       signatureFactory.url = 'url_foobar';
       signatureFactory.host = 'host_foobar';
@@ -150,7 +148,6 @@ describe('Signing', () => {
         'host',
         'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
         ].join('\n'));
-
     });
 
 
@@ -161,9 +158,6 @@ describe('Signing', () => {
       expect(time.hasOwnProperty('usbldate')).toBeTruthy()
       expect(time.hasOwnProperty('shortdate')).toBeTruthy()
       expect(time.hasOwnProperty('longdate')).toBeTruthy()
-
     });
-
-
   });
 });
