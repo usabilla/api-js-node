@@ -32,7 +32,9 @@ class SignatureFactory {
 
   setHeaders (headers) {
     // optional
-    Object.assign(this.headers, headers);
+    for (let key in headers) {
+      this.headers[key] = headers[key];
+    }
   }
 
   handleQuery (query) {
@@ -56,12 +58,9 @@ class SignatureFactory {
       }
       params.sort();
 
-      this.queryParameters = '';
-      for (var i = 0; i < params.length; i++) {
-        this.queryParameters += params[i] + '=' + query.params[params[i]] + '&';
-      }
+      // map params to URL queryParameters
+      this.queryParameters = Object.keys(params).map(function(k) { return [params[k], query.params[params[k]]].join('=') }).join('&');
 
-      this.queryParameters = this.queryParameters.slice(0, -1);
     }
   }
 
@@ -71,7 +70,8 @@ class SignatureFactory {
 
   getHeadersToSign () {
     // add host to headers
-    let headers = Object.assign(this.headers, {host: this.host});
+    this.headers.host = this.host;
+    let headers = this.headers;
 
     // delete possible cached Authorization header
     delete headers.Authorization;
@@ -152,14 +152,9 @@ class SignatureFactory {
   sign () {
     this.headers['Authorization'] = this.authHeader();
 
-    let url = this.url
-    if (this.queryParameters) {
-      url = `${url}?${this.queryParameters}`;
-    }
-
     return {
       headers: this.headers,
-      url: url
+      url: (this.queryParameters) ? `${this.url}?${this.queryParameters}` : this.url
     };
   }
 }

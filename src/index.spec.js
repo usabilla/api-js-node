@@ -1,19 +1,19 @@
-import Usabilla from './index';
+const Usabilla = require('./../src/index.js');
 
-describe('Index', () => {
-  describe('Usabilla', () => {
-    let usabilla;
+describe('Usabilla', () => {
+  let usabilla;
 
-    beforeEach(() => {
-      usabilla = new Usabilla();
-    });
+  beforeEach(() => {
+    usabilla = new Usabilla();
+  });
 
-    it('should have proper config on init', () => {
-      expect(usabilla.config).toEqual({
-        method: 'GET',
-        host: 'data.usabilla.com',
-        iterator: true
-      });
+  it('should have proper config on init', () => {
+    const config = usabilla.configure({foo: 'bar'});
+    expect(config).toEqual({
+      method: 'GET',
+      host: 'data.usabilla.com',
+      iterator: true,
+      foo: 'bar'
     });
   });
 });
