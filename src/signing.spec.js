@@ -1,8 +1,8 @@
-import SignatureFactory from './signing';
+const SignatureFactory = require('./../src/signing.js');
 
 describe('Signing', () => {
   describe('SignatureFactory', () => {
-    let signatureFactory;
+    var signatureFactory;
 
     beforeEach(() => {
       signatureFactory = new SignatureFactory();
