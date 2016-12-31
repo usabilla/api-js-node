@@ -32,10 +32,13 @@ module.exports = function(config) {
     // configure browserify and babelify to use preset
     browserify: {
       debug: true,
-      transform: [istanbul({
-        instrumenter: isparta,
-        ignore: ['**/node_modules/**', '**/*.spec.js']
-      }), 'babelify']
+      transform: [
+        istanbul({
+          instrumenter: isparta,
+          ignore: ['**/node_modules/**', '**/*.spec.js']
+        }),
+        'babelify'
+      ]
     },
 
     // coverage reporter configuration
