@@ -1,4 +1,5 @@
 const Usabilla = require('../src/index');
+const resources = require('../src/resources');
 
 describe('Usabilla', function() {
 
@@ -12,6 +13,12 @@ describe('Usabilla', function() {
       host: 'data.usabilla.com',
       iterator: true
     });
+  });
+
+  it('has resources instantiated', function() {
+    expect(this.usabilla.websites instanceof resources.WebsitesProduct).toBe(true);
+    expect(this.usabilla.email instanceof resources.EmailProduct).toBe(true);
+    expect(this.usabilla.apps instanceof resources.AppsProduct).toBe(true);
   });
 
   describe('configure', function() {
