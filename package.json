@@ -3,9 +3,6 @@
   "version": "1.0.0-beta.1",
   "description": "Node client for Usabilla public API",
   "main": "./dist/index.js",
-  "dependencies": {
-    "moment": "^2.15.1"
-  },
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-polyfill": "^6.20.0",
@@ -15,7 +12,6 @@
     "browserify": "^13.1.0",
     "browserify-istanbul": "^2.0.0",
     "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
     "isparta": "^4.0.0",
     "jasmine": "^2.5.2",
     "jasmine-core": "^2.5.2",
@@ -26,11 +22,12 @@
     "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^1.0.2",
     "wallabify": "0.0.14",
+    "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
   "scripts": {
     "start": "gulp",
-    "build": "gulp babel",
+    "build": "gulp build",
     "prepublish": "npm run build",
     "test": "karma start karma.conf.js --single-run",
     "test:watch": "karma start karma.conf.js"
