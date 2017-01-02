@@ -1,16 +1,26 @@
 const gulp = require('gulp');
-const babel = require('gulp-babel');
+const source = require('vinyl-source-stream');
+const browserify = require('browserify');
+const babelify = require('babelify');
 
 const paths = {
-  scripts: 'src/index.js'
+  src: './src',
+  dist: './dist',
+  entry: './src/index.js',
+  filename: 'index.js',
 };
 
-gulp.task('babel', () => {
-  return gulp.src(paths.scripts)
-    .pipe(babel())
-    .pipe(gulp.dest('dist'));
+gulp.task('build', () => {
+  return browserify(paths.entry, {
+      builtins: false,
+      standalone: 'usabilla-api',
+    })
+    .transform(babelify)
+    .bundle()
+    .pipe(source(paths.filename))
+    .pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('default', ['babel'], () => {
-  gulp.watch(paths.scripts, ['babel']);
+gulp.task('default', ['build'], () => {
+  gulp.watch(paths.src, ['build']);
 });

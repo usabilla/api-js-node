@@ -1,5 +1,4 @@
 'use strict';
-const moment = require('moment');
 const crypto = require('crypto');
 
 /**
@@ -141,12 +140,14 @@ class SignatureFactory {
   };
 
   getDateTime () {
-    const dates = {};
-    dates.usbldate = moment().format('ddd, DD MMM YYYY HH:mm:ss') + ' GMT';
-    dates.shortdate = moment().format('YYYYMMDD');
-    dates.longdate = moment().format('YYYYMMDDTHHmmss') + 'Z';
+    const date = (new Date())
+      .toJSON()
+      .replace(/[\-\:\.]/g, '');
 
-    return dates;
+    return {
+      shortdate: date.substr(0, 8),
+      longdate: `${date.substr(0, 15)}Z`,
+    };
   }
 
   sign () {
