@@ -5,15 +5,15 @@ describe('SignatureFactory', () => {
 
   beforeEach(() => {
     signatureFactory = new SignatureFactory();
-  })
+  });
 
   it('should set a URL', () => {
-    signatureFactory.setUrl('foobar')
+    signatureFactory.setUrl('foobar');
     expect(signatureFactory.url).toEqual('foobar');
   });
 
   it('should set a Method', () => {
-    signatureFactory.setMethod('foobar')
+    signatureFactory.setMethod('foobar');
     expect(signatureFactory.method).toEqual('foobar');
   });
 
@@ -29,10 +29,10 @@ describe('SignatureFactory', () => {
   describe('handleQuery', () => {
 
     it('should transform URL based on query with id', () => {
-      signatureFactory.url = 'bar/:id/bar'
+      signatureFactory.url = 'bar/:id/bar';
       let query = {
         id: 'foo'
-      }
+      };
 
       signatureFactory.handleQuery(query);
 
@@ -40,8 +40,8 @@ describe('SignatureFactory', () => {
     });
 
     it('should transform URL based on query without id', () => {
-      signatureFactory.url = 'bar/:id/bar'
-      let query = {}
+      signatureFactory.url = 'bar/:id/bar';
+      let query = {};
 
       signatureFactory.handleQuery(query);
 
@@ -49,10 +49,10 @@ describe('SignatureFactory', () => {
     });
 
     it('should transform URL based on query with star id', () => {
-      signatureFactory.url = 'bar/:id/bar'
+      signatureFactory.url = 'bar/:id/bar';
       let query = {
         id: '*'
-      }
+      };
 
       signatureFactory.handleQuery(query);
 
@@ -60,13 +60,13 @@ describe('SignatureFactory', () => {
     });
 
     it('should transform URL based on query with star id', () => {
-      signatureFactory.url = 'bar/:id/bar'
+      signatureFactory.url = 'bar/:id/bar';
       let query = {
         params: {
           limit: 'foo',
           since: 'bar'
         }
-      }
+      };
 
       signatureFactory.handleQuery(query);
 
@@ -86,7 +86,7 @@ describe('SignatureFactory', () => {
       };
 
       headers = signatureFactory.getHeadersToSign();
-    })
+    });
 
     it('should add add host header', () => {
       expect(headers.hasOwnProperty('host')).toBeTruthy()
@@ -101,7 +101,7 @@ describe('SignatureFactory', () => {
         fooA: 'barA',
         fooB: 'barB',
         host: 'foobar'
-      }
+      };
       expect(headers).toEqual(expected);
     });
   });
@@ -153,8 +153,8 @@ describe('SignatureFactory', () => {
     //FIX ME
     let time = signatureFactory.getDateTime();
 
-    expect(time.hasOwnProperty('usbldate')).toBeTruthy()
-    expect(time.hasOwnProperty('shortdate')).toBeTruthy()
-    expect(time.hasOwnProperty('longdate')).toBeTruthy()
+    expect(time.hasOwnProperty('usbldate')).toBeTruthy();
+    expect(time.hasOwnProperty('shortdate')).toBeTruthy();
+    expect(time.hasOwnProperty('longdate')).toBeTruthy();
   });
 });
