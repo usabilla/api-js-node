@@ -1,4 +1,3 @@
-'use strict';
 const crypto = require('crypto');
 
 /**
@@ -10,7 +9,7 @@ const crypto = require('crypto');
  */
 class SignatureFactory {
 
-  constructor (accessKey, secretKey, host) {
+  constructor(accessKey, secretKey, host) {
     this.accessKey = accessKey;
     this.secretKey = secretKey;
     this.host = host;
@@ -19,24 +18,24 @@ class SignatureFactory {
     this.headers = {};
   }
 
-  setUrl (url) {
+  setUrl(url) {
     // mandatory
     this.url = url;
   }
 
-  setMethod (method) {
+  setMethod(method) {
     // optional
     this.method = method;
   }
 
-  setHeaders (headers) {
+  setHeaders(headers) {
     // optional
     for (let key in headers) {
       this.headers[key] = headers[key];
     }
   }
 
-  handleQuery (query) {
+  handleQuery(query) {
     // mandatory
     // Transform URL based on query
     if (query.id && query.id != '') {
@@ -58,16 +57,18 @@ class SignatureFactory {
       params.sort();
 
       // map params to URL queryParameters
-      this.queryParameters = Object.keys(params).map(function(k) { return [params[k], query.params[params[k]]].join('=') }).join('&');
+      this.queryParameters = Object.keys(params).map(function(k) {
+        return [params[k], query.params[params[k]]].join('=')
+      }).join('&');
 
     }
   }
 
-  hash (string, encoding) {
+  hash(string, encoding) {
     return crypto.createHash('sha256').update(string, 'utf8').digest(encoding);
   }
 
-  getHeadersToSign () {
+  getHeadersToSign() {
     // add host to headers
     this.headers.host = this.host;
     let headers = this.headers;
@@ -83,21 +84,23 @@ class SignatureFactory {
    * Example;
    * 'host:https://data.usabilla.com\nx-usbl-date:${this.dates.longdate}\n'
    */
-  getCanonicalHeaders () {
+  getCanonicalHeaders() {
     let headers = this.getHeadersToSign();
-    return Object.keys(headers).map(function(k) { return [k, headers[k] + '\n'].join(':') }).join('');
+    return Object.keys(headers).map(function(k) {
+      return [k, headers[k] + '\n'].join(':')
+    }).join('');
   }
 
   /**
    * Example;
    * 'host;x-usbl-date'
    */
-  getSignedHeaders () {
+  getSignedHeaders() {
     let headers = this.getHeadersToSign();
     return Object.keys(headers).join(';');
   }
 
-  canonicalString () {
+  canonicalString() {
     return [
       this.method,                // HTTPRequestMethod
       this.url,                   // CanonicalURI
@@ -108,11 +111,11 @@ class SignatureFactory {
     ].join('\n');
   };
 
-  hmac (key, string, encoding) {
+  hmac(key, string, encoding) {
     return crypto.createHmac('sha256', key).update(string, 'utf8').digest(encoding);
   }
 
-  stringToSign () {
+  stringToSign() {
     return [
       'USBL1-HMAC-SHA256',                          // Algorithm
       this.dates.longdate,                          // RequestDate
@@ -121,14 +124,14 @@ class SignatureFactory {
     ].join('\n');
   };
 
-  getSignature () {
+  getSignature() {
     const kDate = this.hmac('USBL1' + this.secretKey, this.dates.shortdate);
     const kSigning = this.hmac(kDate, 'usbl1_request');
 
     return this.hmac(kSigning, this.stringToSign(), 'hex');
   }
 
-  authHeader () {
+  authHeader() {
     this.dates = this.getDateTime();
     this.headers['x-usbl-date'] = this.dates.longdate;
 
@@ -139,7 +142,7 @@ class SignatureFactory {
     ].join(', ');
   };
 
-  getDateTime () {
+  getDateTime() {
     const date = (new Date())
       .toJSON()
       .replace(/[\-\:\.]/g, '');
@@ -150,7 +153,7 @@ class SignatureFactory {
     };
   }
 
-  sign () {
+  sign() {
     this.headers['Authorization'] = this.authHeader();
 
     return {

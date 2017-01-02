@@ -1,4 +1,3 @@
-'use strict';
 const SignatureFactory = require('./../src/signing.js');
 const resources = require('./../src/resources.js');
 
@@ -8,7 +7,7 @@ const resources = require('./../src/resources.js');
  */
 class Usabilla {
 
-  constructor (accessKey, secretKey) {
+  constructor(accessKey, secretKey) {
     this.config = {
       method: 'GET',
       host: 'data.usabilla.com',
@@ -22,11 +21,8 @@ class Usabilla {
     this.apps = new resources.AppsProduct('/live', signatureFactory, this.config);
   }
 
-  configure (options) {
-    for (let key in options) {
-      this.config[key] = options[key];
-    }
-    return this.config;
+  configure(options) {
+    Object.assign(this.config, options);
   }
 }
 

@@ -1,6 +1,5 @@
-'use strict';
 const https = require('https');
-const pjson = require('./../package.json');
+const packageJson = require('../package.json');
 
 /**
  * Base resource class which takes care of creating the query
@@ -8,7 +7,7 @@ const pjson = require('./../package.json');
  */
 class Resource {
 
-  constructor (url, signatureFactory, config) {
+  constructor(url, signatureFactory, config) {
     this.url = url;
     this.signatureFactory = signatureFactory;
     this.config = config
@@ -34,12 +33,12 @@ class Resource {
    * @returns {Promise}
    */
 
-  get (query, results) {
+  get(query, results) {
     var _query = query || {};
     var _results = results || [];
 
     this.signatureFactory.setUrl(this.url);
-    this.signatureFactory.setHeaders({'user-agent': `Usabilla API Node Client/${pjson.version}`});
+    this.signatureFactory.setHeaders({'user-agent': `Usabilla API Node Client/${packageJson.version}`});
     this.signatureFactory.handleQuery(_query);
     const signature = this.signatureFactory.sign();
 
@@ -87,7 +86,7 @@ class Resource {
  */
 class FormsFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -97,7 +96,7 @@ class FormsFeedbackResource extends Resource {
  */
 class FormsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}`;
     super(baseUrl, signatureFactory, config);
 
@@ -110,7 +109,7 @@ class FormsResource extends Resource {
  */
 class WidgetFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -120,7 +119,7 @@ class WidgetFeedbackResource extends Resource {
  */
 class WidgetsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/button`;
     super(baseUrl, signatureFactory, config);
 
@@ -133,7 +132,7 @@ class WidgetsResource extends Resource {
  */
 class InPageFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -143,7 +142,7 @@ class InPageFeedbackResource extends Resource {
  */
 class InPageResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/inpage`;
     super(baseUrl, signatureFactory, config);
 
@@ -157,7 +156,7 @@ class InPageResource extends Resource {
  */
 class CampaignsResultsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/:id/results`;
     super(baseUrl, signatureFactory, config);
   }
@@ -169,7 +168,7 @@ class CampaignsResultsResource extends Resource {
  */
 class CampaignsStatsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/:id/stats`;
     super(baseUrl, signatureFactory, config);
   }
@@ -180,7 +179,7 @@ class CampaignsStatsResource extends Resource {
  */
 class CampaignsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/campaign`;
     super(baseUrl, signatureFactory, config);
 
@@ -194,7 +193,7 @@ class CampaignsResource extends Resource {
  */
 class ButtonFeedbackResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     super(`${base}/:id/feedback`, signatureFactory, config);
   }
 }
@@ -204,7 +203,7 @@ class ButtonFeedbackResource extends Resource {
  */
 class ButtonsResource extends Resource {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/button`;
     super(baseUrl, signatureFactory, config);
 
@@ -217,7 +216,7 @@ class ButtonsResource extends Resource {
  */
 class WebsitesProduct {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/websites`;
 
     this.buttons = new ButtonsResource(baseUrl, signatureFactory, config);
@@ -231,7 +230,7 @@ class WebsitesProduct {
  */
 class EmailProduct {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/email`;
 
     this.widgets = new WidgetsResource(baseUrl, signatureFactory, config);
@@ -243,7 +242,7 @@ class EmailProduct {
  */
 class AppsProduct {
 
-  constructor (base, signatureFactory, config) {
+  constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/apps`;
 
     this.forms = new FormsResource(baseUrl, signatureFactory, config);
@@ -254,5 +253,5 @@ module.exports = {
   'WebsitesProduct': WebsitesProduct,
   'EmailProduct': EmailProduct,
   'AppsProduct': AppsProduct
-  };
+};
 
