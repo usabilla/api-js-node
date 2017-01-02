@@ -153,7 +153,6 @@ describe('SignatureFactory', () => {
     //FIX ME
     let time = signatureFactory.getDateTime();
 
-    expect(time.hasOwnProperty('usbldate')).toBeTruthy();
     expect(time.hasOwnProperty('shortdate')).toBeTruthy();
     expect(time.hasOwnProperty('longdate')).toBeTruthy();
   });
