@@ -19,8 +19,8 @@ api.websites.buttons.get().then((buttons) => {
   };
   api.websites.buttons.feedback.get(buttonFeedbackQuery).then((feedback) => {
     console.log('# button feedback', feedback.length);
-
   });
+
 }).catch((reason) => {
   // If the api call fails, we want to see the error message
   console.error(reason);
