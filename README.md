@@ -32,20 +32,38 @@ $ node example/example.js <your_access_key> <your_secret_key>
 
 Install the required packages
 
-```
+```bash
 $ npm install
 ```
 
 start the development environment
 
-```
+```bash
 $ npm start
 ```
 
 and run tests with
 
-```
+```bash
 $ npm test
+```
+
+To keep tests running while developing
+
+```bash
+$ npm run test:watch
+```
+
+For linting
+
+```bash
+$ npm run lint
+```
+
+and to fix automatically any lint errors
+
+```bash
+$ npm run lint:fix
 ```
 
 ## Support
