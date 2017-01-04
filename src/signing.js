@@ -30,9 +30,7 @@ class SignatureFactory {
 
   setHeaders(headers) {
     // optional
-    for (let key in headers) {
-      this.headers[key] = headers[key];
-    }
+    Object.assign(this.headers, headers);
   }
 
   handleQuery(query) {
@@ -47,9 +45,9 @@ class SignatureFactory {
 
     // Set queryParameters based on query
     if (!!query.params) {
-      var params = [];
+      let params = [];
 
-      for (var k in query.params) {
+      for (let k in query.params) {
         if (query.params.hasOwnProperty(k)) {
           params.push(k);
         }
@@ -62,10 +60,6 @@ class SignatureFactory {
       }).join('&');
 
     }
-  }
-
-  hash(string, encoding) {
-    return crypto.createHash('sha256').update(string, 'utf8').digest(encoding);
   }
 
   getHeadersToSign() {
@@ -101,57 +95,56 @@ class SignatureFactory {
   }
 
   canonicalString() {
+    /**
+     * HTTPRequestMethod
+     * CanonicalURI
+     * CanonicalQueryString
+     * CanonicalHeaders
+     * SignedHeaders
+     * HexEncode(Hash(RequestPayload))
+     */
     return [
-      this.method,                // HTTPRequestMethod
-      this.url,                   // CanonicalURI
-      this.queryParameters,       // CanonicalQueryString
-      this.getCanonicalHeaders(), // CanonicalHeaders
-      this.getSignedHeaders(),    // SignedHeaders
-      this.hash('', 'hex')        // HexEncode(Hash(RequestPayload))
+      this.method,
+      this.url,
+      this.queryParameters,
+      this.getCanonicalHeaders(),
+      this.getSignedHeaders(),
+      SignatureFactory.hash('', 'hex')
     ].join('\n');
   };
 
-  hmac(key, string, encoding) {
-    return crypto.createHmac('sha256', key).update(string, 'utf8').digest(encoding);
-  }
-
   stringToSign() {
+    /**
+     * Algorithm
+     * RequestDate
+     * CredentialScope
+     * HashedCanonicalRequest
+     */
     return [
-      'USBL1-HMAC-SHA256',                          // Algorithm
-      this.dates.longdate,                          // RequestDate
-      this.dates.shortdate + '/' + 'usbl1_request', // CredentialScope
-      this.hash(this.canonicalString(), 'hex')      // HashedCanonicalRequest
+      'USBL1-HMAC-SHA256',
+      this.dates.longdate,
+      this.dates.shortdate + '/' + 'usbl1_request',
+      SignatureFactory.hash(this.canonicalString(), 'hex')
     ].join('\n');
   };
 
   getSignature() {
-    const kDate = this.hmac('USBL1' + this.secretKey, this.dates.shortdate);
-    const kSigning = this.hmac(kDate, 'usbl1_request');
+    const kDate = SignatureFactory.hmac('USBL1' + this.secretKey, this.dates.shortdate);
+    const kSigning = SignatureFactory.hmac(kDate, 'usbl1_request');
 
-    return this.hmac(kSigning, this.stringToSign(), 'hex');
+    return SignatureFactory.hmac(kSigning, this.stringToSign(), 'hex');
   }
 
   authHeader() {
-    this.dates = this.getDateTime();
+    this.dates = SignatureFactory.getDateTime();
     this.headers['x-usbl-date'] = this.dates.longdate;
 
     return [
-      'USBL1-HMAC-SHA256 Credential=' + this.accessKey + '/' + this.dates.shortdate + '/' + 'usbl1_request',
-      'SignedHeaders=' + this.getSignedHeaders(),
-      'Signature=' + this.getSignature()
+      `USBL1-HMAC-SHA256 Credential=${this.accessKey}/${this.dates.shortdate}/usbl1_request`,
+      `SignedHeaders=${this.getSignedHeaders()}`,
+      `Signature=${this.getSignature()}`
     ].join(', ');
   };
-
-  getDateTime() {
-    const date = (new Date())
-      .toJSON()
-      .replace(/[\-\:\.]/g, '');
-
-    return {
-      shortdate: date.substr(0, 8),
-      longdate: `${date.substr(0, 15)}Z`,
-    };
-  }
 
   sign() {
     this.headers['Authorization'] = this.authHeader();
@@ -161,6 +154,34 @@ class SignatureFactory {
       url: (this.queryParameters) ? `${this.url}?${this.queryParameters}` : this.url
     };
   }
+
+  static getDateTime() {
+    const date = (new Date())
+      .toJSON()
+      .replace(/[\-:.]/g, '');
+
+    return {
+      shortdate: date.substr(0, 8),
+      longdate: `${date.substr(0, 15)}Z`,
+    };
+  }
+
+  static hmac(key, string, encoding) {
+    return crypto
+      .createHmac(SignatureFactory.HMAC, key)
+      .update(string, SignatureFactory.ENCODING)
+      .digest(encoding);
+  }
+
+  static hash(string, encoding) {
+    return crypto
+      .createHash(SignatureFactory.HMAC)
+      .update(string, SignatureFactory.ENCODING)
+      .digest(encoding);
+  }
 }
+
+SignatureFactory.HMAC = 'sha256';
+SignatureFactory.ENCODING = 'utf8';
 
 module.exports = SignatureFactory;
