@@ -44,6 +44,9 @@ usabilla.websites.campaigns.get().then((campaigns) => {
   usabilla.websites.campaigns.stats.get(campaignQuery).then((stats) => {
     console.log('campaign stats', stats);
   });
+}).catch((reason) => {
+  // If the usabilla call fails, we want to see the error message
+  console.error(reason);
 });
 
 // Get all inpage widgets for this account.
@@ -58,6 +61,9 @@ usabilla.websites.inpage.get().then((inPageWidgets) => {
   usabilla.websites.inpage.feedback.get(inPageQuery).then((feedback) => {
     console.log('# inpage feedback', feedback.length);
   });
+}).catch((reason) => {
+  // If the usabilla call fails, we want to see the error message
+  console.error(reason);
 });
 
 // Get all email widgets for this account.
@@ -72,6 +78,9 @@ usabilla.email.widgets.get().then((emailWidgets) => {
   usabilla.email.widgets.feedback.get(emailQuery).then((feedback) => {
     console.log('# email feedback', feedback.length);
   });
+}).catch((reason) => {
+  // If the usabilla call fails, we want to see the error message
+  console.error(reason);
 });
 
 // Get all apps forms for this account.
@@ -86,4 +95,7 @@ usabilla.apps.forms.get().then((appsForms) => {
   usabilla.apps.forms.feedback.get(appsQuery).then((feedback) => {
     console.log('# apps feedback', feedback.length);
   });
+}).catch((reason) => {
+  // If the usabilla call fails, we want to see the error message
+  console.error(reason);
 });
