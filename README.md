@@ -17,15 +17,15 @@ please see our [developers guide](http://developers.usabilla.com)
 
 Install node client through npm
 
-```
+```bash
 $ npm install usabilla-api --save
 ```
 
 The example folder contains an running example of the client, which gives an idea
 how the client can be used and what is possible.
 
-```
-$ node example/example.js <your_access_key> <your_secret_key>
+```bash
+$ node example/example.js "your_access_key" "your_secret_key"
 ```
 
 ## Contribute
