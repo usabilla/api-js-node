@@ -1,66 +1,74 @@
 const SignatureFactory = require('./../src/signing.js');
 
-describe('SignatureFactory', () => {
-  let signatureFactory;
+describe('SignatureFactory', function() {
 
-  beforeEach(() => {
-    signatureFactory = new SignatureFactory();
+  beforeEach(function() {
+    this.signatureFactory = new SignatureFactory('access', 'secret', 'host');
   });
 
-  it('should set a URL', () => {
-    signatureFactory.setUrl('foobar');
-    expect(signatureFactory.url).toEqual('foobar');
+  describe('setUrl', function() {
+
+    it('sets a URL', function() {
+      this.signatureFactory.setUrl('foobar');
+      expect(this.signatureFactory.url).toEqual('foobar');
+    });
   });
 
-  it('should set a Method', () => {
-    signatureFactory.setMethod('foobar');
-    expect(signatureFactory.method).toEqual('foobar');
+  describe('setMethod', function() {
+
+    it('sets a Method', function() {
+      this.signatureFactory.setMethod('foobar');
+      expect(this.signatureFactory.method).toEqual('foobar');
+    });
   });
 
-  it('should set Headers', () => {
-    //init
-    signatureFactory.headers = {fooA: 'barA'};
+  describe('setHeaders', function() {
 
-    signatureFactory.setHeaders({fooB: 'barB'});
+    it('sets provided headers to instance headers', function() {
+      //init
+      this.signatureFactory.headers = {fooA: 'barA'};
 
-    expect(signatureFactory.headers).toEqual({fooA: 'barA', fooB: 'barB'});
+      this.signatureFactory.setHeaders({fooB: 'barB'});
+
+      expect(this.signatureFactory.headers).toEqual({fooA: 'barA', fooB: 'barB'});
+    });
   });
 
-  describe('handleQuery', () => {
+  describe('handleQuery', function() {
 
-    it('should transform URL based on query with id', () => {
-      signatureFactory.url = 'bar/:id/bar';
+    it('should transform URL based on query with id', function() {
+      this.signatureFactory.url = 'bar/:id/bar';
       let query = {
         id: 'foo'
       };
 
-      signatureFactory.handleQuery(query);
+      this.signatureFactory.handleQuery(query);
 
-      expect(signatureFactory.url).toEqual('bar/foo/bar');
+      expect(this.signatureFactory.url).toEqual('bar/foo/bar');
     });
 
-    it('should transform URL based on query without id', () => {
-      signatureFactory.url = 'bar/:id/bar';
+    it('should transform URL based on query without id', function() {
+      this.signatureFactory.url = 'bar/:id/bar';
       let query = {};
 
-      signatureFactory.handleQuery(query);
+      this.signatureFactory.handleQuery(query);
 
-      expect(signatureFactory.url).toEqual('bar/:id/bar');
+      expect(this.signatureFactory.url).toEqual('bar/:id/bar');
     });
 
-    it('should transform URL based on query with star id', () => {
-      signatureFactory.url = 'bar/:id/bar';
+    it('should transform URL based on query with star id', function() {
+      this.signatureFactory.url = 'bar/:id/bar';
       let query = {
         id: '*'
       };
 
-      signatureFactory.handleQuery(query);
+      this.signatureFactory.handleQuery(query);
 
-      expect(signatureFactory.url).toEqual('bar/%2A/bar');
+      expect(this.signatureFactory.url).toEqual('bar/%2A/bar');
     });
 
-    it('should transform URL based on query with star id', () => {
-      signatureFactory.url = 'bar/:id/bar';
+    it('should transform URL based on query with star id', function() {
+      this.signatureFactory.url = 'bar/:id/bar';
       let query = {
         params: {
           limit: 'foo',
@@ -68,92 +76,167 @@ describe('SignatureFactory', () => {
         }
       };
 
-      signatureFactory.handleQuery(query);
+      this.signatureFactory.handleQuery(query);
 
-      expect(signatureFactory.queryParameters).toEqual('limit=foo&since=bar');
+      expect(this.signatureFactory.queryParameters).toEqual('limit=foo&since=bar');
     });
   });
 
-  describe('getHeadersToSign', () => {
-    let headers;
+  describe('getHeadersToSign', function() {
 
     //init
-    beforeEach(() => {
-      signatureFactory.host = 'foobar';
-      signatureFactory.headers = {
+    beforeEach(function() {
+      this.signatureFactory.headers = {
         fooB: 'barB',
         fooA: 'barA'
       };
 
-      headers = signatureFactory.getHeadersToSign();
+      this.headers = this.signatureFactory.getHeadersToSign();
     });
 
-    it('should add add host header', () => {
-      expect(headers.hasOwnProperty('host')).toBeTruthy()
+    it('should add add host header', function() {
+      expect(this.headers.hasOwnProperty('host')).toBeTruthy()
     });
 
-    it('should delete possible cached Authorization header', () => {
-      expect(headers.hasOwnProperty('Authorization')).toBeFalsy()
+    it('should delete possible cached Authorization header', function() {
+      expect(this.headers.hasOwnProperty('Authorization')).toBeFalsy()
     });
 
-    it('should sort headers alphabetically', () => {
+    it('should sort headers alphabetically', function() {
       let expected = {
         fooA: 'barA',
         fooB: 'barB',
-        host: 'foobar'
+        host: 'host'
       };
-      expect(headers).toEqual(expected);
+      expect(this.headers).toEqual(expected);
     });
   });
 
-  it('should getCanonicalHeaders', () => {
-    //init
-    signatureFactory.host = 'foobar';
-    signatureFactory.headers = {
-      fooB: 'barB',
-      fooA: 'barA'
-    };
+  describe('getCanonicalHeaders', function() {
 
-    let headers = signatureFactory.getCanonicalHeaders();
+    it('should getCanonicalHeaders', function() {
+      //init
+      this.signatureFactory.headers = {
+        fooB: 'barB',
+        fooA: 'barA'
+      };
 
-    expect(headers).toEqual('fooA:barA\nfooB:barB\nhost:foobar\n');
+      let headers = this.signatureFactory.getCanonicalHeaders();
+
+      expect(headers).toEqual('fooA:barA\nfooB:barB\nhost:host\n');
+    });
   });
 
-  it('should getSignedHeaders', () => {
-    //init
-    signatureFactory.host = 'foobar';
-    signatureFactory.headers = {
-      fooB: 'barB',
-      fooA: 'barA'
-    };
+  describe('getSignedHeaders', function() {
 
-    let headers = signatureFactory.getSignedHeaders();
+    it('should getSignedHeaders', function() {
+      //init
+      this.signatureFactory.headers = {
+        fooB: 'barB',
+        fooA: 'barA'
+      };
 
-    expect(headers).toEqual('fooA;fooB;host');
+      let headers = this.signatureFactory.getSignedHeaders();
+
+      expect(headers).toEqual('fooA;fooB;host');
+    });
   });
 
-  it('should canonicalString', () => {
-    signatureFactory.method = 'GET';
-    signatureFactory.url = 'url_foobar';
-    signatureFactory.host = 'host_foobar';
-    let canonicalString = signatureFactory.canonicalString();
+  describe('canonicalString', function() {
 
-    expect(canonicalString).toEqual([
-      'GET',
-      'url_foobar',
-      '',
-      'host:host_foobar\n',
-      'host',
-      'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
-    ].join('\n'));
+    it('returns the canonical string', function() {
+      this.signatureFactory.method = 'GET';
+      this.signatureFactory.url = 'url_foobar';
+      let canonicalString = this.signatureFactory.canonicalString();
+
+      expect(canonicalString).toEqual([
+        'GET',
+        'url_foobar',
+        '',
+        'host:host\n',
+        'host',
+        'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+      ].join('\n'));
+    });
   });
 
+  describe('getDateTime', function() {
 
-  it('should getDateTime', () => {
-    //FIX ME
-    let time = signatureFactory.getDateTime();
+    it('returns an object with "shortdate" and "longdate"', function() {
+      let time = SignatureFactory.getDateTime();
 
-    expect(time.hasOwnProperty('shortdate')).toBeTruthy();
-    expect(time.hasOwnProperty('longdate')).toBeTruthy();
+      expect(time.hasOwnProperty('shortdate')).toBeTruthy();
+      expect(time.hasOwnProperty('longdate')).toBeTruthy();
+    });
+  });
+
+  describe('stringToSign', function() {
+
+    it('returns the string to sign', function() {
+      spyOn(SignatureFactory, 'hash').and.returnValue('foo');
+      this.signatureFactory.dates = SignatureFactory.getDateTime();
+      const stringToSign = this.signatureFactory.stringToSign();
+      expect(stringToSign).toBe([
+        'USBL1-HMAC-SHA256',
+        this.signatureFactory.dates.longdate,
+        `${this.signatureFactory.dates.shortdate}/usbl1_request`,
+        'foo'
+      ].join('\n'));
+    });
+  });
+
+  describe('getSignature', function() {
+
+    it('calls SignatureFactory.hmac with the correct data', function() {
+      spyOn(SignatureFactory, 'hmac');
+      spyOn(this.signatureFactory, 'stringToSign').and.returnValue('bar');
+      this.signatureFactory.dates = SignatureFactory.getDateTime();
+      this.signatureFactory.getSignature();
+      expect(SignatureFactory.hmac).toHaveBeenCalledTimes(3);
+      expect(SignatureFactory.hmac).toHaveBeenCalledWith('USBL1secret', this.signatureFactory.dates.shortdate);
+      expect(SignatureFactory.hmac).toHaveBeenCalledWith(undefined, 'usbl1_request');
+      expect(SignatureFactory.hmac).toHaveBeenCalledWith(undefined, 'bar', 'hex');
+    });
+  });
+
+  describe('authHeader', function() {
+
+    it('returns the authorization header string', function() {
+      spyOn(SignatureFactory, 'getDateTime').and.returnValue({
+        longdate: 'foo',
+        shortdate: 'bar'
+      });
+      spyOn(this.signatureFactory, 'getSignedHeaders').and.returnValue('baz');
+      spyOn(this.signatureFactory, 'getSignature').and.returnValue('bax');
+      const authHeader = this.signatureFactory.authHeader();
+      expect(authHeader).toBe([
+        `USBL1-HMAC-SHA256 Credential=${this.signatureFactory.accessKey}/${this.signatureFactory.dates.shortdate}/usbl1_request`,
+        'SignedHeaders=baz',
+        'Signature=bax'
+      ].join(', '));
+    });
+  });
+
+  describe('sign', function() {
+    beforeEach(function() {
+      this.signatureFactory.url = 'http://foo.bar';
+    });
+
+    it('returns object with headers that contain "Authorization"', function() {
+      spyOn(this.signatureFactory, 'authHeader').and.returnValue('foo');
+      const signed = this.signatureFactory.sign();
+      expect(signed.headers.Authorization).toBe('foo');
+    });
+
+    it('returns object with the instance url if there no query parameters', function() {
+      const signed = this.signatureFactory.sign();
+      expect(signed.url).toBe('http://foo.bar');
+    });
+
+    it('returns object with url including the query parameters', function() {
+      this.signatureFactory.queryParameters = 'baz=bax';
+      const signed = this.signatureFactory.sign();
+      expect(signed.url).toBe('http://foo.bar?baz=bax');
+    });
   });
 });

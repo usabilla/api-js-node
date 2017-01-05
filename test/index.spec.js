@@ -1,5 +1,7 @@
 const Usabilla = require('../src/index');
-const resources = require('../src/resources');
+const WebsitesProduct = require('../src/resources/websitesProduct');
+const EmailProduct = require('../src/resources/emailProduct');
+const AppsProduct = require('../src/resources/appsProduct');
 
 describe('Usabilla', function() {
 
@@ -16,9 +18,9 @@ describe('Usabilla', function() {
   });
 
   it('has resources instantiated', function() {
-    expect(this.usabilla.websites instanceof resources.WebsitesProduct).toBe(true);
-    expect(this.usabilla.email instanceof resources.EmailProduct).toBe(true);
-    expect(this.usabilla.apps instanceof resources.AppsProduct).toBe(true);
+    expect(this.usabilla.websites instanceof WebsitesProduct).toBe(true);
+    expect(this.usabilla.email instanceof EmailProduct).toBe(true);
+    expect(this.usabilla.apps instanceof AppsProduct).toBe(true);
   });
 
   describe('configure', function() {

@@ -17,35 +17,53 @@ please see our [developers guide](http://developers.usabilla.com)
 
 Install node client through npm
 
-```
+```bash
 $ npm install usabilla-api --save
 ```
 
 The example folder contains an running example of the client, which gives an idea
 how the client can be used and what is possible.
 
-```
-$ node example/example.js <your_access_key> <your_secret_key>
+```bash
+$ node example/example.js "your_access_key" "your_secret_key"
 ```
 
 ## Contribute
 
 Install the required packages
 
-```
+```bash
 $ npm install
 ```
 
 start the development environment
 
-```
+```bash
 $ npm start
 ```
 
 and run tests with
 
-```
+```bash
 $ npm test
+```
+
+To keep tests running while developing
+
+```bash
+$ npm run test:watch
+```
+
+For linting
+
+```bash
+$ npm run lint
+```
+
+and to fix automatically any lint errors
+
+```bash
+$ npm run lint:fix
 ```
 
 ## Support
