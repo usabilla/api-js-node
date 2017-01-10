@@ -2,7 +2,7 @@
   "name": "usabilla-api",
   "version": "1.0.1",
   "description": "Node client for Usabilla public API",
-  "main": "./dist/index.js",
+  "main": "index.js",
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-polyfill": "^6.20.0",

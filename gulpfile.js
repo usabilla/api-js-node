@@ -12,9 +12,9 @@ const paths = {
 
 gulp.task('build', () => {
   return browserify(paths.entry, {
-      builtins: false,
-      standalone: 'usabilla-api',
-    })
+    builtins: false,
+    standalone: 'usabilla-api',
+  })
     .transform(babelify)
     .bundle()
     .pipe(source(paths.filename))
