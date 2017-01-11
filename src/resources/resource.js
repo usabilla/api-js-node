@@ -64,7 +64,7 @@ class Resource {
     this._results = results || [];
 
     this.signatureFactory.setUrl(this.url);
-    this.signatureFactory.setHeaders({'user-agent': `Usabilla API Node Client/${packageJson.version}`});
+    this.signatureFactory.setHeaders(Resource.getDefaultHeaders(packageJson.version));
     this.signatureFactory.handleQuery(this._query);
     const signature = this.signatureFactory.sign();
 
@@ -85,6 +85,12 @@ class Resource {
         res.on('end', this.handleOnEnd.bind(this, resolve, reject));
       }).on('error', this.handleOnError.bind(this, reject));
     });
+  }
+
+  static getDefaultHeaders(version) {
+    return {
+      'x-ub-api-client': `Usabilla API Node Client/${version}`
+    };
   }
 }
 
