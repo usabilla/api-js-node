@@ -94,4 +94,14 @@ describe('Resource', function() {
       expect(requestArgs.headers).toBe('bar');
     });
   });
+
+  describe('getDefaultHeaders', function() {
+    it('returns the proper default headers', function() {
+      const headers = Resource.getDefaultHeaders('1.0.0');
+
+      expect(headers).toEqual({
+        'x-ub-api-client': 'Usabilla API Node Client/1.0.0'
+      });
+    });
+  });
 });
