@@ -36,7 +36,7 @@ usabilla.websites.buttons.get().then((buttons) => {
 });
 ```
 
-See the code in the 'example' folder for more advanced ideas on how to use the client.
+See the code in the [example folder](https://github.com/usabilla/api-js-node/tree/master/example) for more advanced ideas on how to use the client.
 
 ## Contribute
 
