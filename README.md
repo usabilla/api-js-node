@@ -27,9 +27,9 @@ An example that displays the number of buttons:
 
 ```js
 var Usabilla = require('usabilla-api');
-var api = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY');
+var usabilla = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY');
 
-api.websites.buttons.get().then((buttons) => {
+usabilla.websites.buttons.get().then((buttons) => {
     console.log('Number of buttons: ', buttons.length);
 }).catch((reason) => {
     console.error(reason);
