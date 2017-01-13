@@ -21,12 +21,22 @@ Install node client through npm
 $ npm install usabilla-api --save
 ```
 
-The example folder contains an running example of the client, which gives an idea
-how the client can be used and what is possible.
+### Usage
 
-```bash
-$ node example/example.js "your_access_key" "your_secret_key"
+An example that displays the number of buttons:
+
+```js
+var Usabilla = require('usabilla-api');
+var api = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY');
+
+api.websites.buttons.get().then((buttons) => {
+    console.log('Number of buttons: ', buttons.length);
+}).catch((reason) => {
+    console.error(reason);
+});
 ```
+
+See the code in the 'example' folder for more advanced ideas on how to use the client.
 
 ## Contribute
 
