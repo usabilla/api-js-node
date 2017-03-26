@@ -12,6 +12,7 @@ class Resource {
     this.signatureFactory = signatureFactory;
     this.config = config;
     this.str = '';
+    this.queryParams = {};
   }
 
   handleOnData(newJsonString) {
@@ -27,7 +28,10 @@ class Resource {
     this._results = this._results.concat(this.answer.items);
 
     if (this.answer.hasMore && this.config.iterator) {
-      this._query = Object.assign(this._query, {params: {since: this.answer.lastTimestamp}});
+      // Delete since to be replaced by since of new answer
+      delete this.queryParams.since;
+      const params = Object.assign({}, {since: this.answer.lastTimestamp}, this.queryParams);
+      this._query = Object.assign(this._query, {params});
       this.get(this._query, this._results).then((results) => {
         resolve(results);
       });
@@ -62,6 +66,7 @@ class Resource {
   get(query, results) {
     this._query = query || {};
     this._results = results || [];
+    this.queryParams = this._query.params || {};
 
     this.signatureFactory.setUrl(this.url);
     this.signatureFactory.setHeaders(Resource.getDefaultHeaders(packageJson.version));
