@@ -4,7 +4,7 @@ const browserify = require('browserify');
 const babelify = require('babelify');
 
 const paths = {
-  src: './src',
+  src: './src/**/*.js',
   dist: './dist',
   entry: './src/index.js',
   filename: 'index.js',
