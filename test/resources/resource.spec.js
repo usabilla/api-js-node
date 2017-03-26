@@ -67,15 +67,20 @@ describe('Resource', function() {
     it('calls get with query and updated results if hasMore and iterator is true', function() {
       this.resource._results = [{id: 'foo'}];
       this.resource._query = {
-        baz: 'bax'
+        id: 'foo',
+        params: {
+          limit: 10,
+        }
       };
+      this.resource.queryParams = {limit: 10};
       this.resource.config.iterator = true;
       this.resource.str = '{"items": [{"id": "bar"}], "hasMore": true, "lastTimestamp": 1}';
       spyOn(this.resource, 'get').and.returnValue(Promise.resolve());
       this.resource.handleOnEnd(this.spies.resolve, this.spies.reject);
       expect(this.resource.get).toHaveBeenCalledWith({
-        baz: 'bax',
+        id: 'foo',
         params: {
+          limit: 10,
           since: 1
         }
       }, [{id: 'foo'}, {id: 'bar'}]);
