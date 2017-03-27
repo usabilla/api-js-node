@@ -1,6 +1,6 @@
 {
   "name": "usabilla-api",
-  "version": "1.0.4",
+  "version": "0.0.0-development",
   "description": "Node client for Usabilla public API",
   "main": "index.js",
   "devDependencies": {
@@ -11,6 +11,8 @@
     "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "browserify-istanbul": "^2.0.0",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.12.2",
     "gulp": "^3.9.1",
     "isparta": "^4.0.0",
@@ -22,6 +24,7 @@
     "karma-coverage": "^1.1.1",
     "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^1.0.2",
+    "semantic-release": "^6.3.2",
     "vinyl-source-stream": "^1.1.0",
     "wallabify": "0.0.14",
     "watchify": "^3.7.0"
@@ -34,16 +37,23 @@
     "test:watch": "karma start karma.conf.js",
     "lint": "eslint ./src ./test ./example/example.js",
     "lint:fix": "npm run lint -- --fix",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "commit": "git-cz"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:usabilla/api-js-node.git"
+    "url": "https://github.com/usabilla/api-js-node"
   },
   "author": {
     "name": "Usabilla",
     "email": "development@usabilla.com",
     "url": "http://developers.usabilla.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  }
 }
