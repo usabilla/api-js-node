@@ -10,9 +10,15 @@ const usabilla = new Usabilla(args[0], args[1]);
 // Get all buttons for this account.
 usabilla.websites.buttons.get().then((buttons) => {
 
+  const button = buttons[1];
+
+  if (!button) {
+    return;
+  }
+
   // Use the button id to get feedback for this button id.
   let buttonFeedbackQuery = {
-    id: buttons[0].id,
+    id: button.id,
     params: {
       limit: 10
     }
@@ -30,9 +36,15 @@ usabilla.websites.buttons.get().then((buttons) => {
 // Get all campaigns for this account.
 usabilla.websites.campaigns.get().then((campaigns) => {
 
+  const campaign = campaigns[0];
+
+  if (!campaign) {
+    return;
+  }
+
   // Get the results for a campaign with id.
   let campaignQuery = {
-    id: campaigns[0].id
+    id: campaign.id
   };
 
   // Get the responses of the first campaign
@@ -86,9 +98,15 @@ usabilla.email.widgets.get().then((emailWidgets) => {
 // Get all apps forms for this account.
 usabilla.apps.forms.get().then((appsForms) => {
 
+  const appsForm = appsForms[1];
+
+  if (!appsForm) {
+    return;
+  }
+
   // Get the feedback for a apps form with id.
   let appsQuery = {
-    id: appsForms[1].id
+    id: appsForm.id
   };
 
   // Get the feedback of the second app form
