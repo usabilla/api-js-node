@@ -76,7 +76,7 @@ class SignatureFactory {
 
   /**
    * Example;
-   * 'host:https://data.usabilla.com\nx-usbl-date:${this.dates.longdate}\n'
+   * 'host:data.usabilla.com\nx-usbl-date:${this.dates.longdate}\n'
    */
   getCanonicalHeaders() {
     let headers = this.getHeadersToSign();
