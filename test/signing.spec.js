@@ -106,7 +106,7 @@ describe('SignatureFactory', function() {
       let expected = {
         fooA: 'barA',
         fooB: 'barB',
-        host: 'host'
+        host: 'data.usabilla.com'
       };
       expect(this.headers).toEqual(expected);
     });
@@ -123,7 +123,7 @@ describe('SignatureFactory', function() {
 
       let headers = this.signatureFactory.getCanonicalHeaders();
 
-      expect(headers).toEqual('fooA:barA\nfooB:barB\nhost:host\n');
+      expect(headers).toEqual('fooA:barA\nfooB:barB\nhost:data.usabilla.com\n');
     });
   });
 
@@ -153,7 +153,7 @@ describe('SignatureFactory', function() {
         'GET',
         'url_foobar',
         '',
-        'host:host\n',
+        'host:data.usabilla.com\n',
         'host',
         'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
       ].join('\n'));

@@ -9,22 +9,19 @@ const AppsProduct = require('./resources/appsProduct');
  */
 class Usabilla {
 
-  constructor(accessKey, secretKey) {
-    this.config = {
-      method: 'GET',
+  constructor(accessKey, secretKey, options = {}) {
+    this.config = Object.assign({}, {
+      protocol: 'https',
       host: 'data.usabilla.com',
+      port: null,
       iterator: true
-    };
+    }, options);
 
-    const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
+    const signatureFactory = new SignatureFactory(accessKey, secretKey);
 
     this.websites = new WebsitesProduct('/live', signatureFactory, this.config);
     this.email = new EmailProduct('/live', signatureFactory, this.config);
     this.apps = new AppsProduct('/live', signatureFactory, this.config);
-  }
-
-  configure(options) {
-    Object.assign(this.config, options);
   }
 }
 

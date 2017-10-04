@@ -9,10 +9,10 @@ const crypto = require('crypto');
  */
 class SignatureFactory {
 
-  constructor(accessKey, secretKey, host) {
+  constructor(accessKey, secretKey) {
     this.accessKey = accessKey;
     this.secretKey = secretKey;
-    this.host = host;
+    this.host = 'data.usabilla.com';
 
     this.method = 'GET';
     this.headers = {};

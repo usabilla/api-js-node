@@ -1,17 +1,16 @@
-const https = require('https');
-const packageJson = require('../../package.json');
+const https = require("https");
+const packageJson = require("../../package.json");
 
 /**
  * Base resource class which takes care of creating the query
  * and signing the request.
  */
 class Resource {
-
   constructor(url, signatureFactory, config) {
     this.url = url;
     this.signatureFactory = signatureFactory;
     this.config = config;
-    this.str = '';
+    this.str = "";
     this.queryParams = {};
   }
 
@@ -30,9 +29,13 @@ class Resource {
     if (this.answer.hasMore && this.config.iterator) {
       // Delete since to be replaced by since of new answer
       delete this.queryParams.since;
-      const params = Object.assign({}, {since: this.answer.lastTimestamp}, this.queryParams);
-      this._query = Object.assign(this._query, {params});
-      this.get(this._query, this._results).then((results) => {
+      const params = Object.assign(
+        {},
+        { since: this.answer.lastTimestamp },
+        this.queryParams
+      );
+      this._query = Object.assign(this._query, { params });
+      this.get(this._query, this._results).then(results => {
         resolve(results);
       });
     } else {
@@ -69,32 +72,39 @@ class Resource {
     this.queryParams = this._query.params || {};
 
     this.signatureFactory.setUrl(this.url);
-    this.signatureFactory.setHeaders(Resource.getDefaultHeaders(packageJson.version));
+    this.signatureFactory.setHeaders(
+      Resource.getDefaultHeaders(packageJson.version)
+    );
     this.signatureFactory.handleQuery(this._query);
     const signature = this.signatureFactory.sign();
 
-    let requestOptions = {
-      protocol: 'https:',
+    const requestOptions = {
+      protocol: `${this.config.protocol}:`,
       host: this.config.host,
+      port: this.config.port,
       path: signature.url,
       headers: signature.headers
     };
 
     return new Promise((resolve, reject) => {
-      https.get(requestOptions, (res) => {
-        this.str = '';
-        this.answer = {};
-
-        res.on('data', this.handleOnData.bind(this));
-
-        res.on('end', this.handleOnEnd.bind(this, resolve, reject));
-      }).on('error', this.handleOnError.bind(this, reject));
+      https
+        .get(requestOptions, this.handleGetResponse.bind(this, resolve, reject))
+        .on("error", this.handleOnError.bind(this, reject));
     });
+  }
+
+  handleGetResponse(resolve, reject, response) {
+    this.str = "";
+    this.answer = {};
+
+    response.on("data", this.handleOnData.bind(this));
+
+    response.on("end", this.handleOnEnd.bind(this, resolve, reject));
   }
 
   static getDefaultHeaders(version) {
     return {
-      'x-ub-api-client': `Usabilla API Node Client/${version}`
+      "x-ub-api-client": `Usabilla API Node Client/${version}`
     };
   }
 }
