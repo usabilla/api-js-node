@@ -26,55 +26,17 @@ $ npm install usabilla-api --save
 An example that displays the number of buttons:
 
 ```js
-var Usabilla = require('usabilla-api');
-var usabilla = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY');
+const Usabilla = require('usabilla-api');
+const usabilla = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY');
 
 usabilla.websites.buttons.get().then((buttons) => {
-    console.log('Number of buttons: ', buttons.length);
+  console.log('Number of buttons: ', buttons.length);
 }).catch((reason) => {
-    console.error(reason);
+  console.error(reason);
 });
 ```
 
 See the code in the [example folder](https://github.com/usabilla/api-js-node/tree/master/example) for more advanced ideas on how to use the client.
-
-## Contribute
-
-Install the required packages
-
-```bash
-$ npm install
-```
-
-start the development environment
-
-```bash
-$ npm start
-```
-
-and run tests with
-
-```bash
-$ npm test
-```
-
-To keep tests running while developing
-
-```bash
-$ npm run test:watch
-```
-
-For linting
-
-```bash
-$ npm run lint
-```
-
-and to fix automatically any lint errors
-
-```bash
-$ npm run lint:fix
-```
 
 ## Support
 
