@@ -4,7 +4,6 @@ const EmailProduct = require('../src/resources/emailProduct');
 const AppsProduct = require('../src/resources/appsProduct');
 
 describe('Usabilla', function() {
-
   beforeEach(function() {
     this.usabilla = new Usabilla('access', 'secret');
   });

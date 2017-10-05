@@ -1,5 +1,5 @@
-const https = require("https");
-const packageJson = require("../../package.json");
+const https = require('https');
+const packageJson = require('../../package.json');
 
 /**
  * Base resource class which takes care of creating the query
@@ -10,7 +10,7 @@ class Resource {
     this.url = url;
     this.signatureFactory = signatureFactory;
     this.config = config;
-    this.str = "";
+    this.str = '';
     this.queryParams = {};
   }
 
@@ -89,22 +89,22 @@ class Resource {
     return new Promise((resolve, reject) => {
       https
         .get(requestOptions, this.handleGetResponse.bind(this, resolve, reject))
-        .on("error", this.handleOnError.bind(this, reject));
+        .on('error', this.handleOnError.bind(this, reject));
     });
   }
 
   handleGetResponse(resolve, reject, response) {
-    this.str = "";
+    this.str = '';
     this.answer = {};
 
-    response.on("data", this.handleOnData.bind(this));
+    response.on('data', this.handleOnData.bind(this));
 
-    response.on("end", this.handleOnEnd.bind(this, resolve, reject));
+    response.on('end', this.handleOnEnd.bind(this, resolve, reject));
   }
 
   static getDefaultHeaders(version) {
     return {
-      "x-ub-api-client": `Usabilla API Node Client/${version}`
+      'x-ub-api-client': `Usabilla API Node Client/${version}`
     };
   }
 }

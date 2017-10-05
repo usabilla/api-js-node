@@ -8,7 +8,6 @@ const crypto = require('crypto');
  * - URL + Query parameters
  */
 class SignatureFactory {
-
   constructor(accessKey, secretKey) {
     this.accessKey = accessKey;
     this.secretKey = secretKey;
@@ -55,10 +54,11 @@ class SignatureFactory {
       params.sort();
 
       // map params to URL queryParameters
-      this.queryParameters = Object.keys(params).map(function(k) {
-        return [params[k], query.params[params[k]]].join('=')
-      }).join('&');
-
+      this.queryParameters = Object.keys(params)
+        .map(function(k) {
+          return [params[k], query.params[params[k]]].join('=');
+        })
+        .join('&');
     }
   }
 
@@ -71,7 +71,9 @@ class SignatureFactory {
     delete headers.Authorization;
 
     // sort headers alphabetically
-    return Object.keys(headers).sort().reduce((r, k) => (r[k] = headers[k], r), {});
+    return Object.keys(headers)
+      .sort()
+      .reduce((r, k) => ((r[k] = headers[k]), r), {});
   }
 
   /**
@@ -80,9 +82,11 @@ class SignatureFactory {
    */
   getCanonicalHeaders() {
     let headers = this.getHeadersToSign();
-    return Object.keys(headers).map(function(k) {
-      return [k, headers[k] + '\n'].join(':')
-    }).join('');
+    return Object.keys(headers)
+      .map(function(k) {
+        return [k, headers[k] + '\n'].join(':');
+      })
+      .join('');
   }
 
   /**
@@ -111,7 +115,7 @@ class SignatureFactory {
       this.getSignedHeaders(),
       SignatureFactory.hash('', 'hex')
     ].join('\n');
-  };
+  }
 
   stringToSign() {
     /**
@@ -126,10 +130,13 @@ class SignatureFactory {
       this.dates.shortdate + '/' + 'usbl1_request',
       SignatureFactory.hash(this.canonicalString(), 'hex')
     ].join('\n');
-  };
+  }
 
   getSignature() {
-    const kDate = SignatureFactory.hmac('USBL1' + this.secretKey, this.dates.shortdate);
+    const kDate = SignatureFactory.hmac(
+      'USBL1' + this.secretKey,
+      this.dates.shortdate
+    );
     const kSigning = SignatureFactory.hmac(kDate, 'usbl1_request');
 
     return SignatureFactory.hmac(kSigning, this.stringToSign(), 'hex');
@@ -140,29 +147,30 @@ class SignatureFactory {
     this.headers['x-usbl-date'] = this.dates.longdate;
 
     return [
-      `USBL1-HMAC-SHA256 Credential=${this.accessKey}/${this.dates.shortdate}/usbl1_request`,
+      `USBL1-HMAC-SHA256 Credential=${this.accessKey}/${this.dates
+        .shortdate}/usbl1_request`,
       `SignedHeaders=${this.getSignedHeaders()}`,
       `Signature=${this.getSignature()}`
     ].join(', ');
-  };
+  }
 
   sign() {
     this.headers['Authorization'] = this.authHeader();
 
     return {
       headers: this.headers,
-      url: (this.queryParameters) ? `${this.url}?${this.queryParameters}` : this.url
+      url: this.queryParameters
+        ? `${this.url}?${this.queryParameters}`
+        : this.url
     };
   }
 
   static getDateTime() {
-    const date = (new Date())
-      .toJSON()
-      .replace(/[\-:.]/g, '');
+    const date = new Date().toJSON().replace(/[\-:.]/g, '');
 
     return {
       shortdate: date.substr(0, 8),
-      longdate: `${date.substr(0, 15)}Z`,
+      longdate: `${date.substr(0, 15)}Z`
     };
   }
 
