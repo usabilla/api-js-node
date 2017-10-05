@@ -3,7 +3,6 @@ const Resource = require('../../src/resources/resource');
 const https = require('https');
 
 describe('Resource', function() {
-
   beforeEach(function() {
     this.signatureFactory = new SignatureFactory();
     spyOn(this.signatureFactory, 'sign').and.returnValue({
@@ -11,21 +10,23 @@ describe('Resource', function() {
       headers: 'bar'
     });
     this.spies = {
-      reject: function() {
-      },
-      resolve: function() {
-      }
+      reject: function() {},
+      resolve: function() {}
     };
     spyOn(this.spies, 'reject');
     spyOn(this.spies, 'resolve');
     this.config = {
+      protocol: 'https',
       host: 'host'
     };
-    this.resource = new Resource('http://foo.bar', this.signatureFactory, this.config);
+    this.resource = new Resource(
+      'http://foo.bar',
+      this.signatureFactory,
+      this.config
+    );
   });
 
   describe('handleOnData', function() {
-
     it('concatenates new json string to existing json string', function() {
       this.resource.str = 'foo';
       this.resource.handleOnData('bar');
@@ -34,7 +35,6 @@ describe('Resource', function() {
   });
 
   describe('handleOnError', function() {
-
     it('rejects with error', function() {
       this.resource.handleOnError(this.spies.reject, 'foo');
       expect(this.spies.reject).toHaveBeenCalledWith('foo');
@@ -42,7 +42,6 @@ describe('Resource', function() {
   });
 
   describe('handleOnEnd', function() {
-
     it('rejects with answer error', function() {
       this.resource.str = '{"error": "foo"}';
       this.resource.handleOnEnd(this.spies.resolve, this.spies.reject);
@@ -53,7 +52,7 @@ describe('Resource', function() {
       this.resource._results = [];
       this.resource.str = '{"items": [{"id": "foo"}]}';
       this.resource.handleOnEnd(this.spies.resolve, this.spies.reject);
-      expect(this.spies.resolve).toHaveBeenCalledWith([{id: 'foo'}]);
+      expect(this.spies.resolve).toHaveBeenCalledWith([{ id: 'foo' }]);
     });
 
     it('resolves with first results if hasMore is true and iterator false', function() {
@@ -61,34 +60,37 @@ describe('Resource', function() {
       this.resource.config.iterator = false;
       this.resource.str = '{"items": [{"id": "foo"}], "hasMore": true}';
       this.resource.handleOnEnd(this.spies.resolve, this.spies.reject);
-      expect(this.spies.resolve).toHaveBeenCalledWith([{id: 'foo'}]);
+      expect(this.spies.resolve).toHaveBeenCalledWith([{ id: 'foo' }]);
     });
 
     it('calls get with query and updated results if hasMore and iterator is true', function() {
-      this.resource._results = [{id: 'foo'}];
+      this.resource._results = [{ id: 'foo' }];
       this.resource._query = {
         id: 'foo',
         params: {
-          limit: 10,
+          limit: 10
         }
       };
-      this.resource.queryParams = {limit: 10};
+      this.resource.queryParams = { limit: 10 };
       this.resource.config.iterator = true;
-      this.resource.str = '{"items": [{"id": "bar"}], "hasMore": true, "lastTimestamp": 1}';
+      this.resource.str =
+        '{"items": [{"id": "bar"}], "hasMore": true, "lastTimestamp": 1}';
       spyOn(this.resource, 'get').and.returnValue(Promise.resolve());
       this.resource.handleOnEnd(this.spies.resolve, this.spies.reject);
-      expect(this.resource.get).toHaveBeenCalledWith({
-        id: 'foo',
-        params: {
-          limit: 10,
-          since: 1
-        }
-      }, [{id: 'foo'}, {id: 'bar'}]);
+      expect(this.resource.get).toHaveBeenCalledWith(
+        {
+          id: 'foo',
+          params: {
+            limit: 10,
+            since: 1
+          }
+        },
+        [{ id: 'foo' }, { id: 'bar' }]
+      );
     });
   });
 
   describe('get', function() {
-
     it('calls https get with correct request options', function() {
       spyOn(https, 'get');
       this.resource.get({}, []);
@@ -107,6 +109,25 @@ describe('Resource', function() {
       expect(headers).toEqual({
         'x-ub-api-client': 'Usabilla API Node Client/1.0.0'
       });
+    });
+  });
+
+  describe('handleGetResponse', function() {
+    it('sets string and answer', function() {
+      this.resource.string = 'foo';
+      this.resource.answer = { foo: 'foo' };
+      const response = {
+        on: jasmine.createSpy('on')
+      };
+      this.resource.handleGetResponse(
+        Promise.resolve,
+        Promise.reject,
+        response
+      );
+      expect(this.resource.str).toBe('');
+      expect(this.resource.answer).toEqual({});
+      expect(response.on).toHaveBeenCalledWith('data', jasmine.any(Function));
+      expect(response.on).toHaveBeenCalledWith('end', jasmine.any(Function));
     });
   });
 });

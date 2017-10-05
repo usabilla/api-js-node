@@ -38,6 +38,29 @@ usabilla.websites.buttons.get().then((buttons) => {
 
 See the code in the [example folder](https://github.com/usabilla/api-js-node/tree/master/example) for more advanced ideas on how to use the client.
 
+### Configuration
+
+The client can be configured during instantiation with the following options:
+
+- `protocol` (default: `https`) - The protocol to use when making requests
+- `host` (default: `data.usabilla.com`) - The host to use when making requests
+- `port` (default: `null`) - The port to use when making requests
+- `iterator` (default: `true`) - Whether to iterate until all results are retrieved
+
+For example:
+
+```js
+const Usabilla = require('usabilla-api');
+const options = {
+  protocol: 'http',
+  host: 'proxy-host',
+  port: 'proxy-port'
+}
+const usabilla = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY', options);
+
+// usabilla.websites.buttons.get()
+```
+
 ## Support
 
 The Usabilla Node.js Client API is maintained by Usabilla Development Team. Everyone is encouraged to file bug reports,

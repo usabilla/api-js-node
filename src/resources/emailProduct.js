@@ -4,7 +4,6 @@ const WidgetsResource = require('./widgetsResource');
  * Email product endpoints.
  */
 class EmailProduct {
-
   constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/email`;
 

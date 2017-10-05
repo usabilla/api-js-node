@@ -8,23 +8,23 @@ const AppsProduct = require('./resources/appsProduct');
  * Needs to be instantiated with access and secret keys.
  */
 class Usabilla {
+  constructor(accessKey, secretKey, options = {}) {
+    this.config = Object.assign(
+      {},
+      {
+        protocol: 'https',
+        host: 'data.usabilla.com',
+        port: null,
+        iterator: true
+      },
+      options
+    );
 
-  constructor(accessKey, secretKey) {
-    this.config = {
-      method: 'GET',
-      host: 'data.usabilla.com',
-      iterator: true
-    };
-
-    const signatureFactory = new SignatureFactory(accessKey, secretKey, this.config.host);
+    const signatureFactory = new SignatureFactory(accessKey, secretKey);
 
     this.websites = new WebsitesProduct('/live', signatureFactory, this.config);
     this.email = new EmailProduct('/live', signatureFactory, this.config);
     this.apps = new AppsProduct('/live', signatureFactory, this.config);
-  }
-
-  configure(options) {
-    Object.assign(this.config, options);
   }
 }
 

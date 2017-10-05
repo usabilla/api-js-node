@@ -6,7 +6,6 @@ const InPageResource = require('./inPageResource');
  * Websites product endpoints.
  */
 class WebsitesProduct {
-
   constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/websites`;
 

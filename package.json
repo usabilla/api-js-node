@@ -15,6 +15,7 @@
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.12.2",
     "gulp": "^3.9.1",
+    "husky": "^0.14.3",
     "isparta": "^4.0.0",
     "jasmine": "^2.5.2",
     "jasmine-core": "^2.5.2",
@@ -24,6 +25,8 @@
     "karma-coverage": "^1.1.1",
     "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^1.0.2",
+    "lint-staged": "^4.2.3",
+    "prettier-eslint-cli": "^4.4.0",
     "semantic-release": "^6.3.2",
     "vinyl-source-stream": "^1.1.0",
     "wallabify": "0.0.14",
@@ -39,7 +42,9 @@
     "lint:fix": "npm run lint -- --fix",
     "posttest": "npm run lint",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "precommit": "lint-staged",
+    "format": "prettier-eslint --write --single-quote"
   },
   "repository": {
     "type": "git",
@@ -55,5 +60,11 @@
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "format",
+      "git add"
+    ]
   }
 }
