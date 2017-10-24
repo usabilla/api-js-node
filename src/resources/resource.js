@@ -1,4 +1,5 @@
 const https = require('https');
+const http = require('http');
 const packageJson = require('../../package.json');
 
 /**
@@ -12,6 +13,11 @@ class Resource {
     this.config = config;
     this.str = '';
     this.queryParams = {};
+    this.httpClient = this.getHttpClient(this.config.protocol);
+  }
+
+  getHttpClient(protocol) {
+    return protocol === 'http' ? http : https;
   }
 
   handleOnData(newJsonString) {
@@ -87,7 +93,7 @@ class Resource {
     };
 
     return new Promise((resolve, reject) => {
-      https
+      this.httpClient
         .get(requestOptions, this.handleGetResponse.bind(this, resolve, reject))
         .on('error', this.handleOnError.bind(this, reject));
     });

@@ -42,7 +42,7 @@ See the code in the [example folder](https://github.com/usabilla/api-js-node/tre
 
 The client can be configured during instantiation with the following options:
 
-- `protocol` (default: `https`) - The protocol to use when making requests
+- `protocol` (default: `https`) - The protocol to use when making requests, this will also configure the type of node http client either `http` or `https`
 - `host` (default: `data.usabilla.com`) - The host to use when making requests
 - `port` (default: `null`) - The port to use when making requests
 - `iterator` (default: `true`) - Whether to iterate until all results are retrieved
