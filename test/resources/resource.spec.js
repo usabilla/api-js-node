@@ -26,6 +26,12 @@ describe('Resource', function() {
     );
   });
 
+  describe('getHttpClient', function() {
+    it('returns http when protocol is http', function() {
+      expect(this.resource.getHttpClient('http')).toBeDefined();
+    });
+  });
+
   describe('handleOnData', function() {
     it('concatenates new json string to existing json string', function() {
       this.resource.str = 'foo';
