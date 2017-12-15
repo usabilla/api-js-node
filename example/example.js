@@ -10,7 +10,7 @@ const usabilla = new Usabilla(args[0], args[1]);
 // Get all buttons for this account.
 usabilla.websites.buttons.get().then((buttons) => {
 
-  const button = buttons[1];
+  const button = buttons[0];
 
   if (!button) {
     return;
@@ -25,6 +25,8 @@ usabilla.websites.buttons.get().then((buttons) => {
   };
   usabilla.websites.buttons.feedback.get(buttonFeedbackQuery).then((feedback) => {
     console.log('# button feedback', feedback.length);
+  }).catch((reason) => {
+    console.error(reason);
   });
 
 }).catch((reason) => {
@@ -49,12 +51,16 @@ usabilla.websites.campaigns.get().then((campaigns) => {
 
   // Get the responses of the first campaign
   usabilla.websites.campaigns.results.get(campaignQuery).then((responses) => {
-    console.log('# campaign responses', responses.length);
+    console.log('# web campaign responses', responses.length);
+  }).catch((reason) => {
+    console.error(reason);
   });
 
   // Get the stats of the first campaign
   usabilla.websites.campaigns.stats.get(campaignQuery).then((stats) => {
-    console.log('campaign stats', stats);
+    console.log('web campaign stats', stats);
+  }).catch((reason) => {
+    console.error(reason);
   });
 }).catch((reason) => {
   // If the usabilla call fails, we want to see the error message
@@ -72,6 +78,8 @@ usabilla.websites.inpage.get().then((inPageWidgets) => {
   // Get the feedback of the first inpage widget
   usabilla.websites.inpage.feedback.get(inPageQuery).then((feedback) => {
     console.log('# inpage feedback', feedback.length);
+  }).catch((reason) => {
+    console.error(reason);
   });
 }).catch((reason) => {
   // If the usabilla call fails, we want to see the error message
@@ -98,7 +106,7 @@ usabilla.email.widgets.get().then((emailWidgets) => {
 // Get all apps forms for this account.
 usabilla.apps.forms.get().then((appsForms) => {
 
-  const appsForm = appsForms[1];
+  const appsForm = appsForms[0];
 
   if (!appsForm) {
     return;
