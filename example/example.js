@@ -125,3 +125,28 @@ usabilla.apps.forms.get().then((appsForms) => {
   // If the usabilla call fails, we want to see the error message
   console.error(reason);
 });
+
+// Get all apps campaigns for this account.
+usabilla.apps.campaigns.get().then((appsCampaigns) => {
+  
+  // Use the first campaign found
+  const appsCampaign = appsCampaigns[0];
+  if (!appsCampaign) {
+    return;
+  }
+
+  // Get the feedback for a apps form with id.
+  let appsCampaignQuery = {
+    id: appsCampaign.id
+  };
+
+  // Get the feedback of the second app form
+  usabilla.apps.campaigns.results.get(appsCampaignQuery).then((responses) => {
+    console.log('# apps campaign responses', responses.length);
+  }).catch((reason) => {
+    console.error(reason);
+  });
+
+}).catch((reason) => {
+  console.error(reason);
+});

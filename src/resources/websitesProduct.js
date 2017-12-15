@@ -1,5 +1,5 @@
 const ButtonsResource = require('./buttonsResource');
-const CampaignsResource = require('./campaignsResource');
+const WebCampaignsResource = require('./webCampaignsResource');
 const InPageResource = require('./inPageResource');
 
 /**
@@ -10,7 +10,7 @@ class WebsitesProduct {
     const baseUrl = `${base}/websites`;
 
     this.buttons = new ButtonsResource(baseUrl, signatureFactory, config);
-    this.campaigns = new CampaignsResource(baseUrl, signatureFactory, config);
+    this.campaigns = new WebCampaignsResource(baseUrl, signatureFactory, config);
     this.inpage = new InPageResource(baseUrl, signatureFactory, config);
   }
 }
