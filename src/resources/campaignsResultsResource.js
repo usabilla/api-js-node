@@ -1,7 +1,7 @@
 const Resource = require('./resource');
 
 /**
- * Websites Campaign Results resource.
+ * Websites and Apps Campaign Results resource.
  * This resource provides the responses for a single or all campaigns.
  */
 class CampaignsResultsResource extends Resource {

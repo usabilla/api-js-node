@@ -1,4 +1,5 @@
 const FormsResource = require('./formsResource');
+const AppsCampaignsResource = require('./appsCampaignsResource');
 
 /**
  * Apps product endpoints.
@@ -8,6 +9,7 @@ class AppsProduct {
     const baseUrl = `${base}/apps`;
 
     this.forms = new FormsResource(baseUrl, signatureFactory, config);
+    this.campaigns = new AppsCampaignsResource(baseUrl, signatureFactory, config);
   }
 }
 

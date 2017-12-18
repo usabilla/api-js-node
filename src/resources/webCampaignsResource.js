@@ -1,11 +1,11 @@
-const Resource = require('./resource');
 const CampaignsResultsResource = require('./campaignsResultsResource');
-const CampaignsStatsResource = require('./campaignsStatsResource');
+const WebCampaignsStatsResource = require('./webCampaignsStatsResource');
+const Resource = require('./resource');
 
 /**
  * Websites Campaigns resource.
  */
-class CampaignsResource extends Resource {
+class WebCampaignsResource extends Resource {
   constructor(base, signatureFactory, config) {
     const baseUrl = `${base}/campaign`;
     super(baseUrl, signatureFactory, config);
@@ -15,8 +15,8 @@ class CampaignsResource extends Resource {
       signatureFactory,
       config
     );
-    this.stats = new CampaignsStatsResource(baseUrl, signatureFactory, config);
+    this.stats = new WebCampaignsStatsResource(baseUrl, signatureFactory, config);
   }
 }
 
-module.exports = CampaignsResource;
+module.exports = WebCampaignsResource;
