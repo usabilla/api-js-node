@@ -3,7 +3,6 @@ const isparta = require('isparta');
 
 module.exports = function(config) {
   var base = {
-
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
@@ -16,7 +15,7 @@ module.exports = function(config) {
       'node_modules/babel-polyfill/dist/polyfill.js',
 
       'src/**/*.js',
-      'test/**/*.spec.js',
+      'test/**/*.spec.js'
     ],
 
     // list of files to exclude
@@ -44,10 +43,7 @@ module.exports = function(config) {
     // coverage reporter configuration
     coverageReporter: {
       dir: 'coverage',
-      reporters: [
-        {type: 'text-summary'},
-        {type: 'html', subdir: 'html'}
-      ]
+      reporters: [{ type: 'text-summary' }, { type: 'html', subdir: 'html' }]
     },
 
     // test results reporter to use
@@ -81,18 +77,18 @@ module.exports = function(config) {
     concurrency: Infinity,
 
     customLaunchers: {
-      Chrome_travis_ci: {
+      chrome_circle_ci: {
         base: 'Chrome',
         flags: ['--no-sandbox']
       }
     }
   };
 
-  if (process.env.TRAVIS) {
-    base.browsers = ['Chrome_travis_ci'];
+  if (process.env.CIRCLECI) {
+    base.browsers = ['chrome_circle_ci'];
     base.singleRun = true;
     base.autoWatch = false;
-    base.coverageReporter.reporters.push({type: 'lcov', subdir: './'});
+    base.coverageReporter.reporters.push({ type: 'lcov', subdir: './' });
     base.reporters.push('coveralls');
   }
 
