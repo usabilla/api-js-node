@@ -12,6 +12,7 @@
     "browserify": "^13.1.1",
     "browserify-istanbul": "^2.0.0",
     "commitizen": "^2.9.6",
+    "condition-circle": "^2.0.1",
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.12.2",
     "gulp": "^3.9.1",
@@ -60,6 +61,9 @@
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
+  },
+  "release": {
+    "verifyConditions": "condition-circle"
   },
   "lint-staged": {
     "*.js": [
