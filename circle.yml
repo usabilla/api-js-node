@@ -9,5 +9,9 @@ dependencies:
 test:
   override:
     - yarn test
-  post:
-    - if [ $CIRCLE_BRANCH = 'master' ]; then yarn semantic-release; fi
+
+deployment:
+  release:
+    branch: master
+    commands:
+      - DEBUG=condition yarn semantic-release || true
