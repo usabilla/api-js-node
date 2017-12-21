@@ -11,7 +11,7 @@ The client has the following features:
 ## Authentication
 
 The client uses extensive authentication based on a request signing process. For more information,
-please see our [developers guide](http://developers.usabilla.com)
+please see our [developers guide](http://developers.usabilla.com).
 
 ## Getting started
 
