@@ -63,7 +63,4 @@ const usabilla = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY', options);
 
 ## Support
 
-The Usabilla Node.js Client API is maintained by Usabilla Development Team. Everyone is encouraged to file bug reports,
-feature requests, and pull requests through GitHub. This input is critical and will be carefully considered, but we
-can’t promise a specific resolution or time frame for any request. For more information please email our Support Team
-at support@usabilla.com
+The Usabilla Node.js Client API is maintained by Usabilla Development Team. Everyone is encouraged to file bug reports, feature requests, and pull requests through GitHub. This input is critical and will be carefully considered, but we can’t promise a specific resolution or time frame for any request. For more information please email our Support Team at support@usabilla.com.
