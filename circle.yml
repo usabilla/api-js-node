@@ -3,6 +3,8 @@ machine:
     version: $(cat $HOME/$CIRCLE_PROJECT_REPONAME/.nvmrc)
 
 dependencies:
+  pre:
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
   override:
     - yarn install
 
@@ -14,4 +16,4 @@ deployment:
   release:
     branch: master
     commands:
-      - DEBUG=condition yarn semantic-release || true
+      - DEBUG=condition npm run semantic-release || true
