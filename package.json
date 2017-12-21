@@ -12,7 +12,7 @@
     "browserify": "^13.1.1",
     "browserify-istanbul": "^2.0.0",
     "commitizen": "^2.9.6",
-    "condition-circle": "^1.5.0",
+    "condition-circle": "^2.0.1",
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.12.2",
     "gulp": "^3.9.1",
@@ -28,7 +28,7 @@
     "karma-jasmine": "^1.0.2",
     "lint-staged": "^4.2.3",
     "prettier-eslint-cli": "^4.4.0",
-    "semantic-release": "^6.3.6",
+    "semantic-release": "^11.0.2",
     "vinyl-source-stream": "^1.1.0",
     "wallabify": "0.0.14",
     "watchify": "^3.7.0"
@@ -42,7 +42,7 @@
     "lint": "eslint ./src ./test ./example/example.js",
     "lint:fix": "npm run lint -- --fix",
     "posttest": "npm run lint",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-release",
     "commit": "git-cz",
     "precommit": "lint-staged",
     "format": "prettier-eslint --write --single-quote"
