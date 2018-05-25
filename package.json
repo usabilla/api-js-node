@@ -2,46 +2,38 @@
   "name": "usabilla-api",
   "version": "0.0.0-development",
   "description": "Node client for Usabilla public API",
-  "main": "index.js",
+  "main": "dist/api-js-node.js",
+  "module": "lib/index.js",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
   "devDependencies": {
-    "babel-core": "^6.21.0",
-    "babel-polyfill": "^6.20.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.1.1",
-    "browserify-istanbul": "^2.0.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
     "commitizen": "^2.9.6",
     "condition-circle": "^2.0.1",
+    "coveralls": "^3.0.1",
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.12.2",
-    "gulp": "^3.9.1",
     "husky": "^0.14.3",
-    "isparta": "^4.0.0",
-    "jasmine": "^2.5.2",
-    "jasmine-core": "^2.5.2",
-    "karma": "^1.3.0",
-    "karma-browserify": "^5.1.0",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-coverage": "^1.1.1",
-    "karma-coveralls": "^1.1.2",
-    "karma-jasmine": "^1.0.2",
+    "jest": "^23.0.1",
     "lint-staged": "^4.2.3",
     "prettier-eslint-cli": "^4.4.0",
     "semantic-release": "^11.0.2",
-    "vinyl-source-stream": "^1.1.0",
-    "wallabify": "0.0.14",
-    "watchify": "^3.7.0"
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.4"
   },
   "scripts": {
-    "start": "gulp",
-    "build": "gulp build",
-    "prepublish": "npm run build",
-    "test": "karma start karma.conf.js --single-run",
-    "test:watch": "karma start karma.conf.js",
-    "lint": "eslint ./src ./test ./example/example.js",
-    "lint:fix": "npm run lint -- --fix",
-    "posttest": "npm run lint",
+    "start": "webpack -w --mode development",
+    "build": "webpack --mode production",
+    "prepublish": "yarn build",
+    "test": "jest",
+    "test:watch": "yarn test --watch",
+    "test:ci": "yarn test --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "lint": "eslint ./lib ./test ./example/example.js",
+    "lint:fix": "yarn lint --fix",
+    "posttest": "yarn lint",
     "semantic-release": "semantic-release",
     "commit": "git-cz",
     "precommit": "lint-staged",
@@ -67,8 +59,11 @@
   },
   "lint-staged": {
     "*.js": [
-      "format",
+      "yarn format",
       "git add"
     ]
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

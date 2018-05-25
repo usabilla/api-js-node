@@ -1,25 +1,25 @@
-const Usabilla = require('../src/index');
-const WebsitesProduct = require('../src/resources/websitesProduct');
-const EmailProduct = require('../src/resources/emailProduct');
-const AppsProduct = require('../src/resources/appsProduct');
+const Usabilla = require('../lib/index');
 
-describe('Usabilla', function() {
-  beforeEach(function() {
-    this.usabilla = new Usabilla('access', 'secret');
+describe('index', () => {
+  let api;
+
+  beforeEach(() => {
+    api = new Usabilla('api-key', 'private-key');
   });
 
-  it('should have proper config on init', function() {
-    expect(this.usabilla.config).toEqual({
-      protocol: 'https',
-      host: 'data.usabilla.com',
-      port: null,
-      iterator: true
-    });
-  });
-
-  it('has resources instantiated', function() {
-    expect(this.usabilla.websites instanceof WebsitesProduct).toBe(true);
-    expect(this.usabilla.email instanceof EmailProduct).toBe(true);
-    expect(this.usabilla.apps instanceof AppsProduct).toBe(true);
+  it('sets up actions using endpoint configuration', () => {
+    expect(api.websites.buttons.get).toBeDefined();
+    expect(api.websites.buttons.feedback.get).toBeDefined();
+    expect(api.websites.campaigns.get).toBeDefined();
+    expect(api.websites.campaigns.results.get).toBeDefined();
+    expect(api.websites.campaigns.stats.get).toBeDefined();
+    expect(api.websites.inpage.get).toBeDefined();
+    expect(api.websites.inpage.feedback.get).toBeDefined();
+    expect(api.email.widgets.get).toBeDefined();
+    expect(api.email.widgets.feedback.get).toBeDefined();
+    expect(api.apps.forms.get).toBeDefined();
+    expect(api.apps.forms.feedback.get).toBeDefined();
+    expect(api.apps.campaigns.get).toBeDefined();
+    expect(api.apps.campaigns.results.get).toBeDefined();
   });
 });

@@ -1,0 +1,86 @@
+{
+  "websites": {
+    "buttons": {
+      "get": {
+        "method": "GET",
+        "path": "/live/websites/button"
+      },
+      "feedback": {
+        "get": {
+          "method": "GET",
+          "path": "/live/websites/button/:id/feedback"
+        }
+      }
+    },
+    "campaigns": {
+      "get": {
+        "method": "GET",
+        "path": "/live/websites/campaign"
+      },
+      "results": {
+        "get": {
+          "method": "GET",
+          "path": "/live/websites/campaign/:id/results"
+        }
+      },
+      "stats": {
+        "get": {
+          "method": "GET",
+          "path": "/live/websites/campaign/:id/stats"
+        }
+      }
+    },
+    "inpage": {
+      "get": {
+        "method": "GET",
+        "path": "/live/websites/inpage"
+      },
+      "feedback": {
+        "get": {
+          "method": "GET",
+          "path": "/live/websites/inpage/:id/feedback"
+        }
+      }
+    }
+  },
+  "email": {
+    "widgets": {
+      "get": {
+        "method": "GET",
+        "path": "/live/email/button"
+      },
+      "feedback": {
+        "get": {
+          "method": "GET",
+          "path": "/live/email/button/:id/feedback"
+        }
+      }
+    }
+  },
+  "apps": {
+    "forms": {
+      "get": {
+        "method": "GET",
+        "path": "/live/apps"
+      },
+      "feedback": {
+        "get": {
+          "method": "GET",
+          "path": "/live/apps/:id/feedback"
+        }
+      }
+    },
+    "campaigns": {
+      "get": {
+        "method": "GET",
+        "path": "/live/apps/campaign"
+      },
+      "results": {
+        "get": {
+          "method": "GET",
+          "path": "/live/apps/campaign/:id/results"
+        }
+      }
+    }
+  }
+}
