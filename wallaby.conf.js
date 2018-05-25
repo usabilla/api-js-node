@@ -1,20 +1,14 @@
-const wallabify = require('wallabify');
-
-module.exports = function(wallaby) {
+module.exports = function() {
   return {
-    files: [
-      {pattern: 'node_modules/babel-polyfill/dist/polyfill.js', instrument: false},
-      {pattern: 'src/**/*.js', load: false},
-      {pattern: 'package.json', load: false}
-    ],
-    tests: [{pattern: 'test/**/*spec.js', load: false}],
-    compilers: {
-      '**/*.js': wallaby.compilers.babel()
+    files: ['lib/**/*.js', 'package.json', 'lib/endpoints.json'],
+
+    tests: ['test/**/*.spec.js'],
+
+    env: {
+      type: 'node',
+      runner: 'node'
     },
-    postprocessor: wallabify(),
-    setup: function() {
-      // required to trigger tests loading
-      window.__moduleBundler.loadTests();
-    }
+
+    testFramework: 'jest'
   };
 };
