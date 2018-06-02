@@ -9,10 +9,12 @@ describe('action', () => {
   let endpointOptions;
   let options;
   let expectedRequestOptions;
+  let dateToUse;
 
   beforeEach(() => {
-    const DATE_TO_USE = new Date('2016');
-    global.Date = jest.fn(() => DATE_TO_USE);
+    dateToUse = new Date('2016');
+    global.Date = jest.fn(() => dateToUse);
+    global.Date.now = jest.fn().mockReturnValue(dateToUse.valueOf());
 
     items = [{ id: '1' }, { id: '2' }];
     apiOptions = { protocol: 'https', host: 'localhost', iterator: false };
@@ -72,12 +74,29 @@ describe('action', () => {
         })
       );
 
-    action(apiOptions, endpointOptions, 'access-key', 'private-key', options)
+    action(apiOptions, endpointOptions, 'access-key', 'private-key')
       .then(result => {
         expect(result).toEqual([...items, ...moreItems]);
         expect(axios).toHaveBeenCalledWith(expectedRequestOptions);
         done();
       })
       .catch(done.fail);
+  });
+
+  it('throws a client error when request fails', done => {
+    axios.mockImplementationOnce(() =>
+      Promise.reject({
+        error: {
+          message: 'foo'
+        }
+      })
+    );
+    action(apiOptions, endpointOptions, 'access-key', 'private-key', options)
+      .then(done.fail)
+      .catch(error => {
+        expect(error.raw.error.message).toBe('foo');
+        expect(error.timestamp).toBe(dateToUse.valueOf());
+        done();
+      });
   });
 });
