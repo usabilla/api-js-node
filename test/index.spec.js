@@ -4,7 +4,10 @@ describe('index', () => {
   let api;
 
   beforeEach(() => {
-    api = new Usabilla('api-key', 'private-key');
+    api = new Usabilla('api-key', 'private-key', {
+      host: 'localhost',
+      port: 8882
+    });
   });
 
   it('sets up actions using endpoint configuration', () => {
