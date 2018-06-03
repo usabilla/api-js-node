@@ -1,2 +1,11 @@
+.github
+.babelrc
+.editorconfig
+.eslintignore
+.eslintrc.json
+.gitignore
+.nvmrc
+circle.yml
+wallaby.conf.js
+webpack.config.js
 coverage
-.idea
