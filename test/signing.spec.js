@@ -67,7 +67,7 @@ describe('SignatureFactory', () => {
       expect(signatureFactory.url).toEqual('bar/%2A/bar');
     });
 
-    it('should transform URL based on query with star id', () => {
+    it('should transform URL based on query with params', () => {
       signatureFactory.url = 'bar/:id/bar';
       let query = {
         params: {
@@ -170,7 +170,7 @@ describe('SignatureFactory', () => {
 
   describe('stringToSign', () => {
     it('returns the string to sign', () => {
-      spyOn(SignatureFactory, 'hash').and.returnValue('foo');
+      SignatureFactory.hash = jest.fn().mockReturnValue('foo');
       signatureFactory.dates = SignatureFactory.getDateTime();
       const stringToSign = signatureFactory.stringToSign();
       expect(stringToSign).toBe(
@@ -186,8 +186,8 @@ describe('SignatureFactory', () => {
 
   describe('getSignature', () => {
     it('calls SignatureFactory.hmac with the correct data', () => {
-      spyOn(SignatureFactory, 'hmac');
-      spyOn(signatureFactory, 'stringToSign').and.returnValue('bar');
+      SignatureFactory.hmac = jest.fn();
+      signatureFactory.stringToSign = jest.fn().mockReturnValue('bar');
       signatureFactory.dates = SignatureFactory.getDateTime();
       signatureFactory.getSignature();
       expect(SignatureFactory.hmac).toHaveBeenCalledTimes(3);
@@ -209,12 +209,12 @@ describe('SignatureFactory', () => {
 
   describe('authHeader', () => {
     it('returns the authorization header string', () => {
-      spyOn(SignatureFactory, 'getDateTime').and.returnValue({
+      SignatureFactory.getDateTime = jest.fn().mockReturnValue({
         longdate: 'foo',
         shortdate: 'bar'
       });
-      spyOn(signatureFactory, 'getSignedHeaders').and.returnValue('baz');
-      spyOn(signatureFactory, 'getSignature').and.returnValue('bax');
+      signatureFactory.getSignedHeaders = jest.fn().mockReturnValue('baz');
+      signatureFactory.getSignature = jest.fn().mockReturnValue('bax');
       const authHeader = signatureFactory.authHeader();
       expect(authHeader).toBe(
         [
@@ -234,7 +234,7 @@ describe('SignatureFactory', () => {
     });
 
     it('returns object with headers that contain "Authorization"', () => {
-      spyOn(signatureFactory, 'authHeader').and.returnValue('foo');
+      signatureFactory.authHeader = jest.fn().mockReturnValue('foo');
       const signed = signatureFactory.sign();
       expect(signed.headers.Authorization).toBe('foo');
     });
