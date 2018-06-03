@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * argv[0] Access Key
  * argv[1] Secret Key
