@@ -1,6 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
-const packageJson = require('./package.json');
 
 module.exports = {
   entry: './lib/index.js',
@@ -20,10 +18,5 @@ module.exports = {
         use: 'babel-loader'
       }
     ]
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.VERSION': JSON.stringify(packageJson.version)
-    })
-  ]
+  }
 };
