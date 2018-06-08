@@ -24,9 +24,8 @@ describe('action', () => {
       baseURL: 'https://localhost',
       headers: {
         Authorization:
-          'USBL1-HMAC-SHA256 Credential=access-key/20160101/usbl1_request, SignedHeaders=host;x-ub-api-client;x-usbl-date, Signature=7f71ccd5a740b72a229f8f6aee0b738b9b4f1e5106efe51da785fa3574116f9b',
+          'USBL1-HMAC-SHA256 Credential=access-key/20160101/usbl1_request, SignedHeaders=host;x-usbl-date, Signature=bdbf025412de09a0331ee3810533f7c69146413745da0412a8d2a71a7d2ba0ce',
         host: 'data.usabilla.com',
-        'x-ub-api-client': 'Usabilla API Node Client/undefined',
         'x-usbl-date': '20160101T000000Z'
       },
       method: 'get',
