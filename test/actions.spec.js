@@ -85,16 +85,19 @@ describe('action', () => {
   it('throws a client error when request fails', done => {
     axios.mockImplementationOnce(() =>
       Promise.reject({
-        error: {
-          message: 'foo'
+        response: {
+          data: {
+            error: {
+              message: 'foo'
+            }
+          }
         }
       })
     );
     action(apiOptions, endpointOptions, 'access-key', 'private-key', options)
       .then(done.fail)
       .catch(error => {
-        expect(error.raw.error.message).toBe('foo');
-        expect(error.timestamp).toBe(dateToUse.valueOf());
+        expect(error.message).toBe('foo');
         done();
       });
   });

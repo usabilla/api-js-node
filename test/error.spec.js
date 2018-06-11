@@ -1,31 +1,28 @@
 const ClientError = require('../lib/error');
 
 describe('ClientError', () => {
-  let dateToUse;
-
-  beforeEach(() => {
-    dateToUse = new Date('2016');
-    global.Date = jest.fn(() => dateToUse);
-    global.Date.now = jest.fn().mockReturnValue(dateToUse.valueOf());
-  });
-
-  it('returns error with timestamp and empty error message when given raw is empty object', () => {
+  it('returns error with empty error message when given raw is empty object', () => {
     const error = new ClientError();
+    expect(error.type).toBeUndefined();
     expect(error.message).toBe('');
-    expect(error.timestamp).toBe(dateToUse.valueOf());
   });
 
-  it('returns error with timestamp and error message given raw error', () => {
+  it('returns error with type, code, message, and status given raw error', () => {
     const error = new ClientError({
       response: {
         data: {
           error: {
-            message: 'foo'
+            type: 'type',
+            code: 'code',
+            message: 'message',
+            status: 'status'
           }
         }
       }
     });
-    expect(error.message).toBe('foo');
-    expect(error.timestamp).toBe(dateToUse.valueOf());
+    expect(error.type).toBe('type');
+    expect(error.code).toBe('code');
+    expect(error.message).toBe('message');
+    expect(error.status).toBe('status');
   });
 });
