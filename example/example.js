@@ -28,7 +28,7 @@ usabilla.websites.buttons
     usabilla.websites.buttons.feedback
       .get(buttonFeedbackQuery)
       .then(feedback => {
-        console.log('# button feedback', feedback);
+        console.log('# button feedback', feedback.length);
       })
       .catch(reason => {
         console.error(reason);
