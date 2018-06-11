@@ -115,9 +115,14 @@ usabilla.email.widgets
     };
 
     // Get the feedback of the first email widget
-    usabilla.email.widgets.feedback.get(emailQuery).then(feedback => {
-      console.log('# email feedback', feedback.length);
-    });
+    usabilla.email.widgets.feedback
+      .get(emailQuery)
+      .then(feedback => {
+        console.log('# email feedback', feedback.length);
+      })
+      .catch(reason => {
+        console.error(reason);
+      });
   })
   .catch(reason => {
     // If the usabilla call fails, we want to see the error message
@@ -140,9 +145,14 @@ usabilla.apps.forms
     };
 
     // Get the feedback of the second app form
-    usabilla.apps.forms.feedback.get(appsQuery).then(feedback => {
-      console.log('# apps feedback', feedback.length);
-    });
+    usabilla.apps.forms.feedback
+      .get(appsQuery)
+      .then(feedback => {
+        console.log('# apps feedback', feedback.length);
+      })
+      .catch(reason => {
+        console.error(reason);
+      });
   })
   .catch(reason => {
     // If the usabilla call fails, we want to see the error message
