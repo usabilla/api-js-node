@@ -61,6 +61,15 @@ const usabilla = new Usabilla('YOUR-ACCESS-KEY', 'YOUR-SECRET-KEY', options);
 // usabilla.websites.buttons.get()
 ```
 
+### Returned errors
+
+In case of an error, the library throws an error object with the following properties:
+
+- `type` - The type of error, usually `Sender`.
+- `code` - A machine readable code of the error as defined in the [guide](http://developers.usabilla.com/#GettingStarted-RequestURLStructure).
+- `message` - Human readable format of the error.
+- `status` - The HTTP status of the response.
+
 ## Support
 
 The Usabilla Node.js Client API is maintained by Usabilla Development Team. Everyone is encouraged to file bug reports, feature requests, and pull requests through GitHub. This input is critical and will be carefully considered, but we can’t promise a specific resolution or time frame for any request. For more information please email our Support Team at support@usabilla.com.
