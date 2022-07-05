@@ -55,9 +55,6 @@
       "path": "node_modules/cz-conventional-changelog"
     }
   },
-  "release": {
-    "verifyConditions": "condition-circle"
-  },
   "lint-staged": {
     "*.js": [
       "yarn format",
