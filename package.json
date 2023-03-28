@@ -11,7 +11,7 @@
     "@babel/core": "^7.21.3",
     "@babel/preset-env": "^7.20.2",
     "babel-loader": "^9.1.2",
-    "commitizen": "^2.9.6",
+    "commitizen": "^4.3.0",
     "coveralls": "^3.0.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "4.19.1",
