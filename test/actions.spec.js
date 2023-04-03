@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-conditional-expect,jest/no-done-callback */
 const axios = require('axios');
 const action = require('../lib/action');
 
@@ -26,24 +27,24 @@ describe('action', () => {
         Authorization:
           'USBL1-HMAC-SHA256 Credential=access-key/20160101/usbl1_request, SignedHeaders=host;x-usbl-date, Signature=bdbf025412de09a0331ee3810533f7c69146413745da0412a8d2a71a7d2ba0ce',
         host: 'data.usabilla.com',
-        'x-usbl-date': '20160101T000000Z'
+        'x-usbl-date': '20160101T000000Z',
       },
       method: 'get',
-      url: '/foo'
+      url: '/foo',
     };
   });
 
-  it('calls request with options and returns items', done => {
+  it('calls request with options and returns items', (done) => {
     axios.mockImplementation(() =>
       Promise.resolve({
         data: {
-          items
-        }
+          items,
+        },
       })
     );
 
     action(apiOptions, endpointOptions, 'access-key', 'private-key', options)
-      .then(result => {
+      .then((result) => {
         expect(result).toEqual(items);
         expect(axios).toHaveBeenCalledWith(expectedRequestOptions);
         done();
@@ -51,7 +52,7 @@ describe('action', () => {
       .catch(done.fail);
   });
 
-  it('calls request with options and returns items with iteration', done => {
+  it('calls request with options and returns items with iteration', (done) => {
     const moreItems = [{ id: '3' }, { id: '4' }];
     apiOptions = Object.assign({}, apiOptions, { iterator: true });
     axios
@@ -60,21 +61,21 @@ describe('action', () => {
           data: {
             items,
             hasMore: true,
-            lastTimestamp: new Date('2017')
-          }
+            lastTimestamp: new Date('2017'),
+          },
         })
       )
       .mockImplementationOnce(() =>
         Promise.resolve({
           data: {
             items: moreItems,
-            hasMore: false
-          }
+            hasMore: false,
+          },
         })
       );
 
     action(apiOptions, endpointOptions, 'access-key', 'private-key')
-      .then(result => {
+      .then((result) => {
         expect(result).toEqual([...items, ...moreItems]);
         expect(axios).toHaveBeenCalledWith(expectedRequestOptions);
         done();
@@ -82,21 +83,21 @@ describe('action', () => {
       .catch(done.fail);
   });
 
-  it('throws a client error when request fails', done => {
+  it('throws a client error when request fails', (done) => {
     axios.mockImplementationOnce(() =>
       Promise.reject({
         response: {
           data: {
             error: {
-              message: 'foo'
-            }
-          }
-        }
+              message: 'foo',
+            },
+          },
+        },
       })
     );
     action(apiOptions, endpointOptions, 'access-key', 'private-key', options)
       .then(done.fail)
-      .catch(error => {
+      .catch((error) => {
         expect(error.message).toBe('foo');
         done();
       });
