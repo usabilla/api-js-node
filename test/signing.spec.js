@@ -30,7 +30,7 @@ describe('SignatureFactory', () => {
 
       expect(signatureFactory.headers).toEqual({
         fooA: 'barA',
-        fooB: 'barB'
+        fooB: 'barB',
       });
     });
   });
@@ -39,7 +39,7 @@ describe('SignatureFactory', () => {
     it('should transform URL based on query with id', () => {
       signatureFactory.url = 'bar/:id/bar';
       let query = {
-        id: 'foo'
+        id: 'foo',
       };
 
       signatureFactory.handleQuery(query);
@@ -59,7 +59,7 @@ describe('SignatureFactory', () => {
     it('should transform URL based on query with star id', () => {
       signatureFactory.url = 'bar/:id/bar';
       let query = {
-        id: '*'
+        id: '*',
       };
 
       signatureFactory.handleQuery(query);
@@ -72,8 +72,8 @@ describe('SignatureFactory', () => {
       let query = {
         params: {
           limit: 'foo',
-          since: 'bar'
-        }
+          since: 'bar',
+        },
       };
 
       signatureFactory.handleQuery(query);
@@ -88,25 +88,29 @@ describe('SignatureFactory', () => {
     beforeEach(() => {
       signatureFactory.headers = {
         fooB: 'barB',
-        fooA: 'barA'
+        fooA: 'barA',
       };
 
       headers = signatureFactory.getHeadersToSign();
     });
 
     it('should add add host header', () => {
-      expect(headers.hasOwnProperty('host')).toBeTruthy();
+      expect(
+        Object.prototype.hasOwnProperty.call(headers, 'host')
+      ).toBeTruthy();
     });
 
     it('should delete possible cached Authorization header', () => {
-      expect(headers.hasOwnProperty('Authorization')).toBeFalsy();
+      expect(
+        Object.prototype.hasOwnProperty.call(headers, 'Authorization')
+      ).toBeFalsy();
     });
 
     it('should sort headers alphabetically', () => {
       let expected = {
         fooA: 'barA',
         fooB: 'barB',
-        host: 'data.usabilla.com'
+        host: 'data.usabilla.com',
       };
       expect(headers).toEqual(expected);
     });
@@ -117,7 +121,7 @@ describe('SignatureFactory', () => {
       //init
       signatureFactory.headers = {
         fooB: 'barB',
-        fooA: 'barA'
+        fooA: 'barA',
       };
 
       let headers = signatureFactory.getCanonicalHeaders();
@@ -131,7 +135,7 @@ describe('SignatureFactory', () => {
       //init
       signatureFactory.headers = {
         fooB: 'barB',
-        fooA: 'barA'
+        fooA: 'barA',
       };
 
       let headers = signatureFactory.getSignedHeaders();
@@ -153,7 +157,7 @@ describe('SignatureFactory', () => {
           '',
           'host:data.usabilla.com\n',
           'host',
-          'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+          'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
         ].join('\n')
       );
     });
@@ -163,8 +167,12 @@ describe('SignatureFactory', () => {
     it('returns an object with "shortdate" and "longdate"', () => {
       let time = SignatureFactory.getDateTime();
 
-      expect(time.hasOwnProperty('shortdate')).toBeTruthy();
-      expect(time.hasOwnProperty('longdate')).toBeTruthy();
+      expect(
+        Object.prototype.hasOwnProperty.call(time, 'shortdate')
+      ).toBeTruthy();
+      expect(
+        Object.prototype.hasOwnProperty.call(time, 'longdate')
+      ).toBeTruthy();
     });
   });
 
@@ -178,7 +186,7 @@ describe('SignatureFactory', () => {
           'USBL1-HMAC-SHA256',
           signatureFactory.dates.longdate,
           `${signatureFactory.dates.shortdate}/usbl1_request`,
-          'foo'
+          'foo',
         ].join('\n')
       );
     });
@@ -211,18 +219,16 @@ describe('SignatureFactory', () => {
     it('returns the authorization header string', () => {
       SignatureFactory.getDateTime = jest.fn().mockReturnValue({
         longdate: 'foo',
-        shortdate: 'bar'
+        shortdate: 'bar',
       });
       signatureFactory.getSignedHeaders = jest.fn().mockReturnValue('baz');
       signatureFactory.getSignature = jest.fn().mockReturnValue('bax');
       const authHeader = signatureFactory.authHeader();
       expect(authHeader).toBe(
         [
-          `USBL1-HMAC-SHA256 Credential=${signatureFactory.accessKey}/${
-            signatureFactory.dates.shortdate
-          }/usbl1_request`,
+          `USBL1-HMAC-SHA256 Credential=${signatureFactory.accessKey}/${signatureFactory.dates.shortdate}/usbl1_request`,
           'SignedHeaders=baz',
-          'Signature=bax'
+          'Signature=bax',
         ].join(', ')
       );
     });
