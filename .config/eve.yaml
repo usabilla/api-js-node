@@ -6,5 +6,6 @@ plugins:
     enabled: true
   merge-dependabot-prs:
     enabled: true
+    mergeMethod: rebase
     dependencies:
       all: major
