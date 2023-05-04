@@ -1,0 +1,10 @@
+version: 1
+team: platform
+
+plugins:
+  approve-dependabot-prs:
+    enabled: true
+  merge-dependabot-prs:
+    enabled: true
+    dependencies:
+      all: major
