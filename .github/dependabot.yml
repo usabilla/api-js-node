@@ -35,6 +35,6 @@ updates:
       interval: "daily"
     labels:
       - "ci"
-      - "dependencies"
+      - "Dependencies"
     reviewers:
       - "rdohms"
