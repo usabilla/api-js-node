@@ -20,7 +20,7 @@
     "jest": "^29.5.0",
     "lint-staged": "^15.0.1",
     "prettier-eslint-cli": "^8.0.1",
-    "semantic-release": "^22",
+    "semantic-release": "^23",
     "webpack": "^5",
     "webpack-cli": "^5"
   },
