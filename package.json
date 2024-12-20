@@ -21,7 +21,7 @@
     "lint-staged": "^15.0.1",
     "prettier-eslint-cli": "^8.0.1",
     "webpack": "^5",
-    "webpack-cli": "^5"
+    "webpack-cli": "^6"
   },
   "scripts": {
     "start": "webpack -w --mode development",
