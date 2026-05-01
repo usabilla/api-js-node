@@ -15,7 +15,7 @@
     "coveralls": "^3.0.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8",
-    "eslint-plugin-jest": "^28",
+    "eslint-plugin-jest": "^29",
     "husky": "^9.0.5",
     "jest": "^30.0.0",
     "lint-staged": "^15.0.1",
